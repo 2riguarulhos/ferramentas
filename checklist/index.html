@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Checklist – Usucapião / Desapropriação</title>
+
+<style>
+@font-face {
+    font-family: "Aptos Display";
+    src: local("Aptos Display"), local("Aptos");
+    font-display: swap;
+}
+
+body {
+    font-family: "Aptos Display", "Segoe UI", Arial, sans-serif;
+    background: #f2f2f2;
+    padding: 20px;
+    font-size: 13px;
+}
+
+.container {
+    background: #ffffff;
+    max-width: 900px;
+    margin: auto;
+    padding: 25px;
+    border: 2px solid #7b1e1e;
+}
+
+/* CABEÇALHO */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    border-bottom: 2px solid #7b1e1e;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+}
+
+.header img { height: 75px; }
+
+.header-title {
+    flex: 1;
+    text-align: center;
+}
+
+.header-title h1 {
+    font-size: 20px;
+    margin: 0;
+    color: #7b1e1e;
+}
+
+.header-title h2 {
+    font-size: 13px;
+    margin-top: 3px;
+    font-weight: normal;
+}
+
+/* PROTOCOLO */
+.protocolo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.protocolo-area label {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.protocolo-input {
+    width: 25%;
+    font-size: 14px;
+}
+
+/* FORM */
+input, textarea {
+    width: 100%;
+    font-family: "Aptos Display", "Segoe UI", Arial, sans-serif;
+    font-size: 13px;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+.print-value {
+    display: none;
+    min-height: 18px;
+}
+
+/* TABELA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+
+th, td {
+    border: 1px solid #000;
+    padding: 6px;
+    vertical-align: top;
+}
+
+th {
+    background: #e6e0dc;
+    text-align: center;
+}
+
+/* SUBCAMPOS */
+.subcampos {
+    font-size: 11px;
+    color: #555;
+    margin-top: 2px;
+}
+
+/* CHECKBOX */
+.checkbox-group {
+    display: flex;
+    gap: 16px;
+    margin-top: 4px;
+}
+
+/* ASSINATURA */
+.signature {
+    margin-top: 45px;
+    width: 260px;
+    border-top: 1px solid #000;
+    text-align: center;
+    padding-top: 4px;
+}
+
+/* BOTÕES */
+.footer {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.print-btn,
+.clear-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+    background: #7b1e1e;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-left: 6px;
+}
+
+/* IMPRESSÃO */
+@media print {
+    input, textarea, button, .no-print {
+        display: none !important;
+    }
+    .print-value {
+        display: block;
+    }
+    .footer {
+        display: none;
+    }
+    body {
+        background: #fff;
+        padding: 0;
+    }
+    .container {
+        border: none;
+        padding: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+    <img src="logo_cartorio.png">
+    <div class="header-title">
+        <h1>Checklist de Análise de Processo</h1>
+        <h2>Usucapião / Desapropriação</h2>
+    </div>
+</div>
+
+<div class="protocolo-area">
+    <label>Protocolo:</label>
+    <input id="protocolo" class="protocolo-input">
+</div>
+<span class="print-value" id="p-protocolo"></span>
+
+<table>
+<thead>
+<tr>
+<th>Documento</th>
+<th>Folhas</th>
+<th>Observação</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td>
+    Especialidade subjetiva
+    <div class="subcampos">RG / CPF • Certidões</div>
+</td>
+<td>
+    <input id="f0" onkeydown="addDash(event)">
+    <span class="print-value" id="pf0"></span>
+</td>
+<td>
+    <input id="o0">
+    <span class="print-value" id="po0"></span>
+</td>
+</tr>
+
+<tr>
+<td>
+    Memorial descritivo
+    <div class="subcampos">Plantas • Laudo inicial • Laudo complementar • Esclarecimentos do perito</div>
+</td>
+<td>
+    <input id="f1" onkeydown="addDash(event)">
+    <span class="print-value" id="pf1"></span>
+</td>
+<td>
+    <input id="o1">
+    <span class="print-value" id="po1"></span>
+</td>
+</tr>
+
+<tr>
+<td>Inscrição cadastral</td>
+<td>
+    <input id="f2" onkeydown="addDash(event)">
+    <span class="print-value" id="pf2"></span>
+</td>
+<td>
+    <input id="o2">
+    <span class="print-value" id="po2"></span>
+</td>
+</tr>
+
+<tr>
+<td>Indicação da origem registrária</td>
+<td>
+    <input id="f3" onkeydown="addDash(event)">
+    <span class="print-value" id="pf3"></span>
+</td>
+<td>
+    <input id="o3">
+    <span class="print-value" id="po3"></span>
+</td>
+</tr>
+
+<tr>
+<td>Manifestações</td>
+<td>
+    <input id="f4" onkeydown="addDash(event)">
+    <span class="print-value" id="pf4"></span>
+</td>
+<td>
+    <input id="o4">
+    <span class="print-value" id="po4"></span>
+</td>
+</tr>
+
+<tr>
+<td>Justiça gratuita</td>
+<td>
+    <input id="jg-texto">
+    <div class="checkbox-group no-print">
+        <label><input type="checkbox" id="jg-indeferido"> Não foi deferido JG</label>
+        <label><input type="checkbox" id="jg-na"> Não se aplica</label>
+    </div>
+    <span class="print-value" id="p-jg"></span>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td><strong>Sentença</strong></td>
+<td>
+    <label>Folhas:</label>
+    <input id="s-folhas" onkeydown="addDash(event)">
+    <span class="print-value" id="ps-folhas"></span>
+
+    <label>Data:</label>
+    <input id="s-data">
+    <span class="print-value" id="ps-data"></span>
+
+    <label>Vara:</label>
+    <input id="s-vara">
+    <span class="print-value" id="ps-vara"></span>
+
+    <div class="checkbox-group no-print">
+        <label>
+            <input type="checkbox" id="s-carta">
+            Carta de sentença
+        </label>
+    </div>
+    <span class="print-value" id="ps-carta"></span>
+</td>
+<td>
+    <input id="s-obs">
+    <span class="print-value" id="ps-obs"></span>
+</td>
+</tr>
+
+<tr>
+<td><strong>Trânsito em julgado</strong></td>
+<td>
+    <input id="t-folhas" onkeydown="addDash(event)">
+    <span class="print-value" id="pt-folhas"></span>
+</td>
+<td>
+    <input id="t-obs">
+    <span class="print-value" id="pt-obs"></span>
+</td>
+</tr>
+
+<tr>
+<td>Recurso</td>
+<td>
+    <input id="r-folhas" onkeydown="addDash(event)">
+    <span class="print-value" id="pr-folhas"></span>
+</td>
+<td>
+    <input id="r-obs">
+    <span class="print-value" id="pr-obs"></span>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<label>Observações / Informações relevantes:</label>
+<textarea id="obs"></textarea>
+<span class="print-value" id="p-obs"></span>
+
+<div class="signature">Assinatura</div>
+
+<div class="footer">
+<button class="print-btn" onclick="prepararImpressao()">Imprimir</button>
+<button class="clear-btn" onclick="limparFormulario()">Limpar</button>
+</div>
+
+</div>
+
+<script>
+function addDash(e) {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        e.target.value += " – ";
+    }
+}
+
+function prepararImpressao() {
+    document.getElementById("p-protocolo").textContent =
+        document.getElementById("protocolo").value || "";
+
+    for (let i = 0; i <= 4; i++) {
+        document.getElementById("pf"+i).textContent =
+            document.getElementById("f"+i).value || "";
+        document.getElementById("po"+i).textContent =
+            document.getElementById("o"+i).value || "";
+    }
+
+    const jgTexto = document.getElementById("jg-texto").value.trim();
+    const indeferido = document.getElementById("jg-indeferido").checked;
+    const na = document.getElementById("jg-na").checked;
+
+    let jgFinal = "";
+    if (jgTexto) jgFinal = jgTexto;
+    else if (indeferido) jgFinal = "Não foi deferido JG";
+    else if (na) jgFinal = "Não se aplica";
+
+    document.getElementById("p-jg").textContent = jgFinal;
+
+    document.getElementById("ps-folhas").textContent =
+        document.getElementById("s-folhas").value || "";
+    document.getElementById("ps-data").textContent =
+        document.getElementById("s-data").value || "";
+    document.getElementById("ps-vara").textContent =
+        document.getElementById("s-vara").value || "";
+
+    document.getElementById("ps-carta").textContent =
+        document.getElementById("s-carta").checked ? "Carta de sentença" : "";
+
+    document.getElementById("ps-obs").textContent =
+        document.getElementById("s-obs").value || "";
+
+    document.getElementById("pt-folhas").textContent =
+        document.getElementById("t-folhas").value || "";
+    document.getElementById("pt-obs").textContent =
+        document.getElementById("t-obs").value || "";
+
+    document.getElementById("pr-folhas").textContent =
+        document.getElementById("r-folhas").value || "";
+    document.getElementById("pr-obs").textContent =
+        document.getElementById("r-obs").value || "";
+
+    document.getElementById("p-obs").textContent =
+        document.getElementById("obs").value || "";
+
+    window.print();
+}
+
+function limparFormulario() {
+    document.querySelectorAll("input, textarea").forEach(el => {
+        if (el.type === "checkbox") {
+            el.checked = false;
+        } else {
+            el.value = "";
+        }
+    });
+    document.querySelectorAll(".print-value").forEach(span => {
+        span.textContent = "";
+    });
+}
+</script>
+
+</body>
+</html>
