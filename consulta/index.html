@@ -97,7 +97,7 @@
 
   <!-- ================= HEADER ================= -->
   <div class="header">
-    <img src="logo_cartorio.png" alt="Logo do Cartório">
+    <img src="logo_cartorio.png" alt="2º Registro de Imóveis de Guarulhos">
     <h1>Bairros de Guarulhos</h1>
   </div>
 
@@ -113,37 +113,44 @@
 
   </div>
 
-  <!-- ================= BASE DE DADOS ================= -->
-  <script src="bairros.js"></script>
-
   <!-- ================= LÓGICA ================= -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
 
-      if (typeof bairros === "undefined") {
-        alert("Erro: bairros.js não foi carregado ou contém erro.");
-        return;
-      }
+      fetch("data/bairros.json")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Erro ao carregar bairros.json");
+          }
+          return response.json();
+        })
+        .then(bairros => {
 
-      // ordena alfabeticamente
-      bairros.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+          // ordena alfabeticamente
+          bairros.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
 
-      const select = document.getElementById("bairroSelect");
-      const info = document.getElementById("info");
+          const select = document.getElementById("bairroSelect");
+          const info = document.getElementById("info");
 
-      // popula o select
-      bairros.forEach(b => {
-        const opt = document.createElement("option");
-        opt.value = b.nome;
-        opt.textContent = b.nome;
-        select.appendChild(opt);
-      });
+          // popula o select
+          bairros.forEach(b => {
+            const opt = document.createElement("option");
+            opt.value = b.nome;
+            opt.textContent = b.nome;
+            select.appendChild(opt);
+          });
 
-      // exibe informações
-      select.addEventListener("change", () => {
-        const bairro = bairros.find(b => b.nome === select.value);
-        info.textContent = bairro ? bairro.dados : "";
-      });
+          // exibe informações
+          select.addEventListener("change", () => {
+            const bairro = bairros.find(b => b.nome === select.value);
+            info.textContent = bairro ? bairro.dados : "";
+          });
+
+        })
+        .catch(err => {
+          alert("Erro ao carregar base de bairros.");
+          console.error(err);
+        });
 
     });
   </script>
