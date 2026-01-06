@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Bairros de Guarulhos – Origem Registral</title>
+
+  <style>
+    /* ================= IDENTIDADE VISUAL ================= */
+    :root {
+      --cor-primaria: #7A1E2D;   /* vinho */
+      --cor-secundaria: #1F6F43; /* verde */
+      --cor-fundo: #f4f4f4;
+      --cor-texto: #222;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px;
+      background: var(--cor-fundo);
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      color: var(--cor-texto);
+    }
+
+    /* ================= HEADER ================= */
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header img {
+      max-width: 220px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+
+    .header h1 {
+      font-family: "Aptos Display", "Segoe UI Variable", "Segoe UI", Calibri, Arial, sans-serif;
+      font-size: 30px;
+      font-weight: 600;
+      margin: 0;
+      color: var(--cor-primaria);
+    }
+
+    /* ================= CONTAINER ================= */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--cor-primaria);
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    select:focus {
+      border-color: var(--cor-secundaria);
+    }
+
+    /* ================= RESULTADO ================= */
+    #info {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      font-size: 14.5px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <div class="header">
+    <img src="logo_cartorio.png" alt="Logo do Cartório">
+    <h1>Bairros de Guarulhos</h1>
+  </div>
+
+  <!-- ================= CONTEÚDO ================= -->
+  <div class="container">
+
+    <label for="bairroSelect">Selecionar bairro</label>
+    <select id="bairroSelect">
+      <option value="">Selecione um bairro</option>
+    </select>
+
+    <div id="info"></div>
+
+  </div>
+
+  <!-- ================= BASE DE DADOS ================= -->
+  <script src="bairros.js"></script>
+
+  <!-- ================= LÓGICA ================= -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      if (typeof bairros === "undefined") {
+        alert("Erro: bairros.js não foi carregado ou contém erro.");
+        return;
+      }
+
+      // ordena alfabeticamente
+      bairros.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+
+      const select = document.getElementById("bairroSelect");
+      const info = document.getElementById("info");
+
+      // popula o select
+      bairros.forEach(b => {
+        const opt = document.createElement("option");
+        opt.value = b.nome;
+        opt.textContent = b.nome;
+        select.appendChild(opt);
+      });
+
+      // exibe informações
+      select.addEventListener("change", () => {
+        const bairro = bairros.find(b => b.nome === select.value);
+        info.textContent = bairro ? bairro.dados : "";
+      });
+
+    });
+  </script>
+
+</body>
+</html>
