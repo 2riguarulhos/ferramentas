@@ -11,52 +11,69 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-:root {
-  --vinho: #6b1d1d;
-  --vinho-escuro: #4f1414;
-  --verde: #2e7d32;
-  --verde-escuro: #1f5e24;
-  --cinza-claro: #f4f6f8;
-  --cinza-medio: #dcdcdc;
-  --texto: #222;
-}
-
 body {
   font-family: 'Segoe UI', system-ui, sans-serif;
-  background-color: var(--cinza-claro);
-  color: var(--texto);
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  background-color: #f4f6f8;
 }
 
+/* SIDEBAR */
 .sidebar {
-  background-color: var(--vinho);
+  width: 220px;
+  background-color: #6b1d1d; /* vinho */
+  color: #ffffff;
+  padding: 20px;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.15);
+}
+
+.sidebar h2 {
+  font-family: 'Aptos Display', 'Segoe UI', sans-serif;
+  font-size: 18px;
+  margin-bottom: 20px;
 }
 
 .sidebar li:hover {
   background-color: rgba(255,255,255,0.15);
 }
 
-.header h1,
-.section h2 {
-  font-family: 'Aptos Display', 'Segoe UI', sans-serif;
-  color: var(--vinho);
+/* ÁREA PRINCIPAL */
+.main {
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff;
 }
 
+/* HEADER */
+.header h1 {
+  font-family: 'Aptos Display', 'Segoe UI', sans-serif;
+  color: #6b1d1d;
+}
+
+/* BOTÕES */
+.btn-limpar {
+  background-color: #b71c1c;
+}
+
+.btn-gerar-pdf {
+  background-color: #6b1d1d;
+}
+
+.btn-ver-mapa {
+  background-color: #2e7d32;
+}
+
+/* TABELAS */
 th {
-  background-color: var(--vinho);
-  color: #fff;
+  background-color: #6b1d1d;
+  color: #ffffff;
 }
 
 tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
-
-.btn-limpar { background-color: #b71c1c; }
-.btn-gerar-pdf { background-color: var(--vinho); }
-.btn-ver-mapa { background-color: var(--verde); }
-
-.btn-limpar:hover { background-color: #8e1616; }
-.btn-gerar-pdf:hover { background-color: var(--vinho-escuro); }
-.btn-ver-mapa:hover { background-color: var(--verde-escuro); }
 </style>
 
 </head>
