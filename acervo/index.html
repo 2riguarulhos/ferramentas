@@ -11,68 +11,83 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
+/* ===== BASE ORIGINAL PRESERVADA ===== */
 body {
   font-family: 'Segoe UI', system-ui, sans-serif;
   margin: 0;
   display: flex;
   flex-direction: row;
   min-height: 100vh;
-  background-color: #f4f6f8;
 }
 
-/* SIDEBAR */
+/* ===== SIDEBAR (SÓ COR) ===== */
 .sidebar {
   width: 220px;
-  background-color: #6b1d1d; /* vinho */
+  background-color: #6b1d1d; /* vinho institucional */
   color: #ffffff;
   padding: 20px;
-  box-shadow: 2px 0 6px rgba(0,0,0,0.15);
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
 .sidebar h2 {
   font-family: 'Aptos Display', 'Segoe UI', sans-serif;
-  font-size: 18px;
-  margin-bottom: 20px;
 }
 
 .sidebar li:hover {
-  background-color: rgba(255,255,255,0.15);
+  background-color: rgba(255,255,255,0.12);
 }
 
-/* ÁREA PRINCIPAL */
+/* ===== ÁREA PRINCIPAL (IGUAL AO ORIGINAL) ===== */
 .main {
   flex: 1;
   padding: 20px;
   background-color: #ffffff;
 }
 
-/* HEADER */
-.header h1 {
+/* ===== TÍTULOS ===== */
+.header h1,
+.section h2 {
   font-family: 'Aptos Display', 'Segoe UI', sans-serif;
   color: #6b1d1d;
 }
 
-/* BOTÕES */
+/* ===== BOTÕES (SÓ COR) ===== */
 .btn-limpar {
-  background-color: #b71c1c;
+  background-color: #e74c3c;
 }
 
 .btn-gerar-pdf {
-  background-color: #6b1d1d;
+  background-color: #3498db;
 }
 
 .btn-ver-mapa {
-  background-color: #2e7d32;
+  background-color: #2ecc71;
 }
 
-/* TABELAS */
+/* ===== TABELAS (ESTRUTURA PRESERVADA) ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th, td {
+  border: 1px solid #969696;
+  padding: 10px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+/* Cabeçalho da tabela – troca só a cor */
 th {
-  background-color: #6b1d1d;
-  color: #ffffff;
+  background-color: #3ccfcf; /* equivalente ao azul original */
+  color: #000000;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+/* ===== DESTAQUE DA PESQUISA (FUNCIONAL – NÃO MEXER) ===== */
+.highlight {
+  background-color: #DAF2D2; /* mantém exatamente como era */
+  font-weight: bold;
 }
 </style>
 
