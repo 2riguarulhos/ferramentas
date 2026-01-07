@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -8,13 +8,12 @@
   :root {
     --vinho: #7a1f2b;
     --verde: #2e6b4f;
-    --cinza-claro: #f5f5f5;
+    --cinza-claro: #f4f4f4;
     --cinza-borda: #d0d0d0;
   }
 
   body {
     margin: 0;
-    padding: 0;
     font-family: "Aptos Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
     background: #ffffff;
     color: #000;
@@ -36,92 +35,98 @@
     margin: 0;
     font-size: 22px;
     color: var(--vinho);
+    font-weight: 600;
   }
 
   main {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 32px 24px;
+    padding: 24px;
     text-align: center;
   }
 
   .busca {
-    margin-bottom: 10px;
+    margin: 30px 0 20px;
   }
 
   input {
     width: 420px;
     max-width: 90%;
     padding: 10px;
-    font-size: 16px;
+    font-size: 15px;
     border: 1px solid var(--cinza-borda);
+    border-radius: 4px;
   }
 
   button {
-    padding: 10px 16px;
+    padding: 10px 18px;
+    margin-left: 8px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
     background: var(--vinho);
     color: #fff;
-    border: none;
-    cursor: pointer;
-    margin-left: 6px;
   }
 
   button:hover {
-    background: #5f1721;
+    opacity: 0.9;
   }
 
-  #resultado {
-    margin-top: 16px;
-  }
-
-  .info {
-    background: var(--cinza-claro);
-    border-left: 6px solid var(--verde);
-    padding: 20px 24px;
-    text-align: left;
-    font-size: 14px;
-    line-height: 1.6;
-    margin-top: 40px;
-  }
-
-  .planta {
-    margin-top: 30px;
-  }
-
-  .zoom-controls {
-    margin-bottom: 10px;
-  }
-
-  .zoom-controls button {
-    font-size: 18px;
-    padding: 6px 12px;
-  }
-
-  .imagem-container {
-    border: 1px solid var(--cinza-borda);
-    overflow: auto;
-    max-height: 600px;
-  }
-
-  .imagem-container img {
-    transform-origin: top left;
-    transition: transform 0.2s ease;
-    display: block;
-  }
-
-  .erro {
-    color: var(--vinho);
-    font-weight: 600;
+  .resultado {
+    margin-top: 20px;
   }
 
   .ok {
     color: var(--verde);
     font-weight: 600;
+    margin-bottom: 10px;
   }
 
-  .aviso {
-    color: #8a6d3b;
+  .erro {
+    color: #b00020;
     font-weight: 600;
+  }
+
+  .zoom-controls {
+    margin: 10px 0;
+  }
+
+  .zoom-controls button {
+    margin: 0 4px;
+    width: 36px;
+    font-weight: bold;
+  }
+
+  .imagem-container {
+    width: 100%;
+    max-height: 600px;
+    overflow: auto;
+    border: 1px solid var(--cinza-borda);
+    background: #fff;
+    margin: 0 auto;
+  }
+
+  .imagem-container img {
+    max-width: 100%;
+    height: auto;
+    transform-origin: top left;
+    transform: scale(1);
+    transition: transform 0.2s ease;
+  }
+
+  .info {
+    background: var(--cinza-claro);
+    border-left: 6px solid var(--verde);
+    padding: 18px 22px;
+    margin-top: 40px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .info strong {
+    color: var(--vinho);
   }
 </style>
 </head>
@@ -135,128 +140,107 @@
 
 <main>
 
-  <!-- BUSCA -->
   <div class="busca">
     <input id="inscricao" placeholder="Digite a inscrição cadastral">
     <button onclick="buscar()">Buscar</button>
   </div>
 
-  <!-- RESULTADO -->
-  <div id="resultado"></div>
+  <div id="resultado" class="resultado"></div>
 
-  <!-- EXPLICAÇÃO (TEXTO ORIGINAL, SEM ALTERAÇÃO) -->
   <div class="info">
     <strong>Como funciona a plataforma</strong><br><br>
 
     Esta ferramenta permite localizar e visualizar a <strong>planta quadra</strong>
     a partir da <strong>inscrição cadastral</strong> do imóvel.<br><br>
 
-    A busca é realizada automaticamente nas pastas de imagens disponíveis.<br><br>
-
     <strong>Formatos aceitos na pesquisa:</strong><br>
-    • Inscrição cadastral completa, com pontos<br>
-    • Apenas números<br>
-    • Código da quadra (primeiros sete dígitos)<br><br>
+    • Inscrição cadastral completa, com pontos (034.60.63.0503.00.000)<br>
+    • Apenas números (034606305030000)<br>
+    • Código da quadra (0346063)<br><br>
 
-    Após a localização da imagem, é possível utilizar os botões
-    <strong>+</strong> e <strong>−</strong> para aplicar zoom diretamente
-    na visualização, sem necessidade de download.
+    Caso existam múltiplas imagens vinculadas à mesma inscrição,
+    todas serão exibidas, com opção de visualização e download individual.
   </div>
 
 </main>
 
 <script>
+let indice = {};
 let zoomAtual = 1;
+const ZOOM_MIN = 0.3;
+const ZOOM_MAX = 3;
+const ZOOM_STEP = 0.2;
 
-function normalizarCodigo(valor) {
+/* CARREGA O ÍNDICE */
+fetch("plantas_png/index.json")
+  .then(r => r.json())
+  .then(d => indice = d)
+  .catch(() => console.error("Erro ao carregar index.json"));
+
+function normalizar(valor) {
   const n = valor.replace(/\D/g, "");
   if (n.length < 7) return null;
   return n.substring(0, 7);
 }
 
-async function buscar() {
-  const resultado = document.getElementById("resultado");
-  resultado.innerHTML = "";
-  zoomAtual = 1;
-
-  const codigo = normalizarCodigo(
-    document.getElementById("inscricao").value
-  );
-
-  if (!codigo) {
-    resultado.innerHTML =
-      '<p class="erro">Inscrição inválida.</p>';
-    return;
-  }
-
-  /* 1️⃣ BUSCA PNG (index.json) */
-  try {
-    const resp = await fetch("plantas_png/index.json");
-    const indice = await resp.json();
-    const arquivos = indice[codigo];
-
-    if (arquivos && arquivos.length > 0) {
-      arquivos.forEach((caminho) => {
-        const nome = caminho.split("/").pop().replace(".png", "");
-
-        resultado.innerHTML += `
-          <div class="planta">
-            <p class="ok">Planta localizada.</p>
-
-            <div class="zoom-controls">
-              <button onclick="zoomIn('${nome}')">+</button>
-              <button onclick="zoomOut('${nome}')">−</button>
-            </div>
-
-            <div class="imagem-container">
-              <img id="img-${nome}" src="plantas_png/${caminho}">
-            </div>
-
-            <br>
-            <a href="plantas_tif/${nome}.tif" download>
-              <button>Download (TIFF)</button>
-            </a>
-          </div>
-        `;
-      });
-      return;
-    }
-  } catch (e) {}
-
-  /* 2️⃣ FALLBACK TIFF (SEM PRÉ-VISUALIZAÇÃO) */
-  const caminhoTif = `plantas_tif/${codigo}.tif`;
-
-  try {
-    const respTif = await fetch(caminhoTif, { method: "HEAD" });
-    if (respTif.ok) {
-      resultado.innerHTML = `
-        <p class="aviso">
-          A planta quadra não pode ser pré-visualizada devido ao tamanho do arquivo,
-          mas está disponível para download.
-        </p>
-        <a href="${caminhoTif}" download>
-          <button>Download (TIFF)</button>
-        </a>
-      `;
-      return;
-    }
-  } catch (e) {}
-
-  /* 3️⃣ NÃO ENCONTRADO */
-  resultado.innerHTML =
-    '<p class="erro">Planta quadra não localizada.</p>';
+function aplicarZoom(img) {
+  img.style.transform = `scale(${zoomAtual})`;
 }
 
 function zoomIn(id) {
-  zoomAtual += 0.2;
-  document.getElementById("img-" + id).style.transform =
-    `scale(${zoomAtual})`;
+  const img = document.getElementById("img-" + id);
+  if (!img) return;
+  zoomAtual = Math.min(ZOOM_MAX, zoomAtual + ZOOM_STEP);
+  aplicarZoom(img);
 }
 
 function zoomOut(id) {
-  zoomAtual = Math.max(0.4, zoomAtual - 0.2);
-  document.getElementById("img-" + id).style.transform =
-    `scale(${zoomAtual})`;
+  const img = document.getElementById("img-" + id);
+  if (!img) return;
+  zoomAtual = Math.max(ZOOM_MIN, zoomAtual - ZOOM_STEP);
+  aplicarZoom(img);
+}
+
+function buscar() {
+  const res = document.getElementById("resultado");
+  res.innerHTML = "";
+  zoomAtual = 1;
+
+  const codigo = normalizar(document.getElementById("inscricao").value);
+  if (!codigo) {
+    res.innerHTML = '<p class="erro">Inscrição inválida.</p>';
+    return;
+  }
+
+  const arquivos = indice[codigo];
+
+  if (arquivos && arquivos.length > 0) {
+    arquivos.forEach(caminho => {
+      const nome = caminho.split("/").pop().replace(".png", "");
+
+      res.innerHTML += `
+        <p class="ok">Planta localizada.</p>
+
+        <div class="zoom-controls">
+          <button onclick="zoomIn('${nome}')">+</button>
+          <button onclick="zoomOut('${nome}')">−</button>
+        </div>
+
+        <div class="imagem-container">
+          <img id="img-${nome}" src="plantas_png/${caminho}">
+        </div>
+
+        <br>
+        <a href="plantas_tif/${nome}.tif" download>
+          <button>Download (TIFF)</button>
+        </a>
+        <hr>
+      `;
+    });
+    return;
+  }
+
+  res.innerHTML = '<p class="erro">Planta quadra não localizada.</p>';
 }
 </script>
 
