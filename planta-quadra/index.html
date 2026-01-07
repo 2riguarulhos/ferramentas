@@ -149,7 +149,7 @@
 
   <div class="info">
     <strong>Como funciona a plataforma</strong><br><br>
-    Pesquisa pela planta quadra a partir da inscrição cadastral.<br>
+    Pesquisa a planta quadra a partir da inscrição cadastral.<br>
     Aceita inscrição completa, apenas números ou código da quadra (7 dígitos).
   </div>
 
@@ -187,15 +187,27 @@ function zoomOut(id) {
   aplicarZoom(img);
 }
 
-/* CRIA BOTÃO DE DOWNLOAD TESTANDO TIF / TIF MAIÚSCULO */
-function botaoDownloadTIFF(codigo) {
+/* DOWNLOAD TIFF COM DETECÇÃO AUTOMÁTICA */
+async function baixarTIFF(codigo) {
   const extensoes = ["tif", "TIF", "tiff", "TIFF"];
 
-  return extensoes.map(ext =>
-    `<a href="plantas_tif/${codigo}.${ext}" download>
-      <button>Download (TIFF)</button>
-    </a>`
-  ).join(" ");
+  for (const ext of extensoes) {
+    const url = `plantas_tif/${codigo}.${ext}`;
+    try {
+      const resp = await fetch(url, { method: "HEAD" });
+      if (resp.ok) {
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${codigo}.${ext}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+      }
+    } catch {}
+  }
+
+  alert("Arquivo TIFF não localizado para download.");
 }
 
 function buscar() {
@@ -237,7 +249,7 @@ function buscar() {
       </div>
 
       <br>
-      ${botaoDownloadTIFF(base)}
+      <button onclick="baixarTIFF('${base}')">Download (TIFF)</button>
       <hr>
     `;
   });
