@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Ferramentas – Cartório</title>
+
+<style>
+  :root {
+    --vinho: #7a1f2b;
+    --verde: #2e6b4f;
+    --cinza-fundo: #f5f5f5;
+    --cinza-menu: #efefef;
+    --cinza-borda: #d0d0d0;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Aptos Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+    background: var(--cinza-fundo);
+  }
+
+  .app {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* MENU LATERAL */
+  .menu {
+    width: 260px;
+    background: var(--cinza-menu);
+    border-right: 1px solid var(--cinza-borda);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-header {
+    padding: 20px;
+    border-bottom: 4px solid var(--vinho);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .menu-header img {
+    height: 48px;
+  }
+
+  .menu-header span {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--vinho);
+  }
+
+  .menu-list {
+    flex: 1;
+    padding: 10px 0;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    cursor: pointer;
+    color: #000;
+    text-decoration: none;
+    font-size: 15px;
+  }
+
+  .menu-item img {
+    width: 22px;
+    height: 22px;
+  }
+
+  .menu-item:hover {
+    background: #ddd;
+  }
+
+  .menu-item.active {
+    background: #fff;
+    border-left: 6px solid var(--verde);
+    font-weight: 600;
+  }
+
+  /* CONTEÚDO */
+  .content {
+    flex: 1;
+    background: #fff;
+  }
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- MENU -->
+  <aside class="menu">
+    <div class="menu-header">
+      <img src="../logo_cartorio.png" alt="Logo">
+      <span>Ferramentas</span>
+    </div>
+
+    <nav class="menu-list">
+      <div class="menu-item active" onclick="abrir('planta-quadra', this)">
+        <img src="icons/planta.svg">
+        Planta Quadra
+      </div>
+
+      <div class="menu-item" onclick="abrir('consulta', this)">
+        <img src="icons/consulta.svg">
+        Consulta
+      </div>
+
+      <div class="menu-item" onclick="abrir('checklist', this)">
+        <img src="icons/checklist.svg">
+        Checklist
+      </div>
+
+      <div class="menu-item" onclick="abrir('acervo', this)">
+        <img src="icons/acervo.svg">
+        Acervo
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ÁREA CENTRAL -->
+  <main class="content">
+    <iframe id="frame" src="../planta-quadra/index.html"></iframe>
+  </main>
+
+</div>
+
+<script>
+  function abrir(pasta, el) {
+    document.querySelectorAll('.menu-item')
+      .forEach(i => i.classList.remove('active'));
+
+    el.classList.add('active');
+    document.getElementById('frame').src = `../${pasta}/index.html`;
+  }
+</script>
+
+</body>
+</html>
