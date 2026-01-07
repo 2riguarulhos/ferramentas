@@ -147,10 +147,20 @@
 
   <div id="resultado" class="resultado"></div>
 
+  <!-- EXPLICAÇÃO RESTAURADA – NÃO MEXER -->
   <div class="info">
     <strong>Como funciona a plataforma</strong><br><br>
-    Pesquisa a planta quadra a partir da inscrição cadastral.<br>
-    Aceita inscrição completa, apenas números ou código da quadra (7 dígitos).
+
+    Esta ferramenta permite localizar e visualizar a <strong>planta quadra</strong> a partir da <strong>inscrição cadastral</strong> do imóvel.<br><br>
+
+    A busca é realizada automaticamente nas pastas de imagens disponíveis.<br><br>
+
+    <strong>Formatos aceitos na pesquisa:</strong><br>
+    • Inscrição cadastral completa, com pontos<br>
+    • Apenas números<br>
+    • Código da quadra (primeiros sete dígitos)<br><br>
+
+    Após a localização da imagem, é possível utilizar os botões <strong>+</strong> e <strong>−</strong> para aplicar zoom diretamente na visualização, sem necessidade de download.
   </div>
 
 </main>
@@ -187,7 +197,6 @@ function zoomOut(id) {
   aplicarZoom(img);
 }
 
-/* DOWNLOAD TIFF COM DETECÇÃO AUTOMÁTICA */
 async function baixarTIFF(codigo) {
   const extensoes = ["tif", "TIF", "tiff", "TIFF"];
 
