@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Consulta de Planta Quadra</title>
+
+<style>
+  :root {
+    --vinho: #7a1f2b;
+    --verde: #2e6b4f;
+    --cinza-claro: #f5f5f5;
+    --cinza-borda: #d0d0d0;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Aptos Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+    background: #ffffff;
+    color: #000;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+    border-bottom: 4px solid var(--vinho);
+    background: #fff;
+  }
+
+  header img {
+    height: 60px;
+  }
+
+  header h1 {
+    font-size: 22px;
+    margin: 0;
+    color: var(--vinho);
+    font-weight: 600;
+  }
+
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    text-align: center;
+  }
+
+  .info {
+    background: var(--cinza-claro);
+    border-left: 6px solid var(--verde);
+    padding: 20px 24px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+
+  .info strong {
+    color: var(--vinho);
+  }
+
+  .busca {
+    margin-bottom: 30px;
+  }
+
+  input {
+    width: 420px;
+    max-width: 90%;
+    padding: 10px 12px;
+    font-size: 16px;
+    border: 1px solid var(--cinza-borda);
+    font-family: "Aptos Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    background: var(--vinho);
+    color: #fff;
+    border: none;
+    margin-left: 8px;
+    font-family: "Aptos Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  }
+
+  button:hover {
+    background: #5f1721;
+  }
+
+  #resultado {
+    margin-top: 30px;
+  }
+
+  .planta {
+    margin-top: 30px;
+  }
+
+  img {
+    max-width: 100%;
+    border: 1px solid var(--cinza-borda);
+    margin-top: 12px;
+  }
+
+  .erro {
+    color: var(--vinho);
+    font-weight: 600;
+  }
+
+  .aviso {
+    color: var(--verde);
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <!-- use o mesmo arquivo de logo das outras ferramentas -->
+  <img src="logo-cartorio.png" alt="Logo do Cartório">
+  <h1>Consulta de Planta Quadra</h1>
+</header>
+
+<main>
+
+  <div class="info">
+    <strong>Como funciona a plataforma</strong><br><br>
+
+    Esta ferramenta permite localizar e visualizar a <strong>planta quadra</strong>
+    a partir da <strong>inscrição cadastral</strong> do imóvel.<br><br>
+
+    O sistema consulta automaticamente um índice com todas as plantas quadra disponíveis.
+    Caso exista mais de uma imagem vinculada à mesma inscrição, todas serão exibidas
+    na tela, com opção de visualização e download individual.<br><br>
+
+    <strong>Formatos aceitos na pesquisa:</strong><br>
+    • Inscrição cadastral completa, com pontos  
+    (<code>034.60.63.0503.00.000</code>)<br>
+    • Apenas números  
+    (<code>034606305030000</code>)<br>
+    • Código da quadra  
+    (<code>0346063</code>)
+  </div>
+
+  <div class="busca">
+    <input id="inscricao" placeholder="Digite a inscrição cadastral">
+    <button onclick="buscar()">Buscar</button>
+  </div>
+
+  <div id="resultado"></div>
+
+</main>
+
+<script>
+async function buscar() {
+  const resultado = document.getElementById("resultado");
+  resultado.innerHTML = "";
+
+  const valor = document.getElementById("inscricao").value;
+  const numeros = valor.replace(/\D/g, "");
+
+  if (numeros.length < 7) {
+    resultado.innerHTML =
+      '<p class="erro">Inscrição inválida.</p>';
+    return;
+  }
+
+  const codigoBase = numeros.substring(0, 7);
+
+  let indice;
+  try {
+    const resposta = await fetch("plantas_png/index.json");
+    indice = await resposta.json();
+  } catch (e) {
+    resultado.innerHTML =
+      '<p class="erro">Erro ao carregar índice de plantas.</p>';
+    return;
+  }
+
+  const arquivos = indice[codigoBase];
+
+  if (!arquivos || arquivos.length === 0) {
+    resultado.innerHTML =
+      '<p class="erro">Nenhuma planta quadra localizada.</p>';
+    return;
+  }
+
+  if (arquivos.length > 1) {
+    resultado.innerHTML +=
+      '<p class="aviso">Foram encontradas múltiplas plantas quadra para esta inscrição.</p>';
+  }
+
+  arquivos.forEach((arquivo) => {
+    const codigo = arquivo.replace(".png", "");
+
+    resultado.innerHTML += `
+      <div class="planta">
+        <p><strong>Arquivo:</strong> ${codigo}</p>
+        <img src="plantas_png/${arquivo}">
+        <br><br>
+        <a href="plantas_tif/${codigo}.tif" download>
+          <button>Download (TIF)</button>
+        </a>
+      </div>
+    `;
+  });
+}
+</script>
+
+</body>
+</html>
