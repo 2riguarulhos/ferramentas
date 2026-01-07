@@ -149,14 +149,8 @@
 
   <div class="info">
     <strong>Como funciona a plataforma</strong><br><br>
-
-    Esta ferramenta permite localizar e visualizar a <strong>planta quadra</strong>
-    a partir da <strong>inscrição cadastral</strong> do imóvel.<br><br>
-
-    <strong>Formatos aceitos na pesquisa:</strong><br>
-    • Inscrição cadastral completa, com pontos<br>
-    • Apenas números<br>
-    • Código da quadra (7 dígitos)<br>
+    Pesquisa pela planta quadra a partir da inscrição cadastral.<br>
+    Aceita inscrição completa, apenas números ou código da quadra (7 dígitos).
   </div>
 
 </main>
@@ -164,15 +158,10 @@
 <script>
 let indice = {};
 let zoomAtual = 1;
-const ZOOM_MIN = 0.3;
-const ZOOM_MAX = 3;
-const ZOOM_STEP = 0.2;
 
-/* CARREGA ÍNDICE */
 fetch("plantas_png/index.json")
   .then(r => r.json())
-  .then(d => indice = d)
-  .catch(() => console.error("Erro ao carregar index.json"));
+  .then(d => indice = d);
 
 function normalizar(valor) {
   const n = valor.replace(/\D/g, "");
@@ -187,15 +176,26 @@ function aplicarZoom(img) {
 function zoomIn(id) {
   const img = document.getElementById("img-" + id);
   if (!img) return;
-  zoomAtual = Math.min(ZOOM_MAX, zoomAtual + ZOOM_STEP);
+  zoomAtual = Math.min(3, zoomAtual + 0.2);
   aplicarZoom(img);
 }
 
 function zoomOut(id) {
   const img = document.getElementById("img-" + id);
   if (!img) return;
-  zoomAtual = Math.max(ZOOM_MIN, zoomAtual - ZOOM_STEP);
+  zoomAtual = Math.max(0.3, zoomAtual - 0.2);
   aplicarZoom(img);
+}
+
+/* CRIA BOTÃO DE DOWNLOAD TESTANDO TIF / TIF MAIÚSCULO */
+function botaoDownloadTIFF(codigo) {
+  const extensoes = ["tif", "TIF", "tiff", "TIFF"];
+
+  return extensoes.map(ext =>
+    `<a href="plantas_tif/${codigo}.${ext}" download>
+      <button>Download (TIFF)</button>
+    </a>`
+  ).join(" ");
 }
 
 function buscar() {
@@ -210,19 +210,15 @@ function buscar() {
   }
 
   const arquivos = indice[codigo];
-  if (!arquivos || arquivos.length === 0) {
+  if (!arquivos) {
     res.innerHTML = '<p class="erro">Planta quadra não localizada.</p>';
     return;
   }
 
-  /* REMOVE DUPLICATAS PELO NOME DO ARQUIVO */
   const unicos = new Map();
-
-  arquivos.forEach(caminho => {
-    const nome = caminho.split("/").pop();
-    if (!unicos.has(nome)) {
-      unicos.set(nome, caminho);
-    }
+  arquivos.forEach(c => {
+    const nome = c.split("/").pop();
+    if (!unicos.has(nome)) unicos.set(nome, c);
   });
 
   unicos.forEach((caminho, nome) => {
@@ -241,9 +237,7 @@ function buscar() {
       </div>
 
       <br>
-      <a href="plantas_tif/${base}.tif" download>
-        <button>Download (TIFF)</button>
-      </a>
+      ${botaoDownloadTIFF(base)}
       <hr>
     `;
   });
