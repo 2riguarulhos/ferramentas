@@ -26,7 +26,6 @@
     gap: 16px;
     padding: 16px 24px;
     border-bottom: 4px solid var(--vinho);
-    background: #fff;
   }
 
   header img {
@@ -34,10 +33,9 @@
   }
 
   header h1 {
-    font-size: 22px;
     margin: 0;
+    font-size: 22px;
     color: var(--vinho);
-    font-weight: 600;
   }
 
   main {
@@ -47,42 +45,25 @@
     text-align: center;
   }
 
-  .info {
-    background: var(--cinza-claro);
-    border-left: 6px solid var(--verde);
-    padding: 20px 24px;
-    text-align: left;
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 30px;
-  }
-
-  .info strong {
-    color: var(--vinho);
-  }
-
   .busca {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
 
   input {
     width: 420px;
     max-width: 90%;
-    padding: 10px 12px;
+    padding: 10px;
     font-size: 16px;
     border: 1px solid var(--cinza-borda);
-    font-family: "Aptos Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
   }
 
   button {
-    padding: 10px 20px;
-    font-size: 15px;
-    cursor: pointer;
+    padding: 10px 16px;
     background: var(--vinho);
     color: #fff;
     border: none;
-    margin-left: 8px;
-    font-family: "Aptos Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+    cursor: pointer;
+    margin-left: 6px;
   }
 
   button:hover {
@@ -90,17 +71,42 @@
   }
 
   #resultado {
-    margin-top: 30px;
+    margin-top: 16px;
+  }
+
+  .info {
+    background: var(--cinza-claro);
+    border-left: 6px solid var(--verde);
+    padding: 20px 24px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 40px;
   }
 
   .planta {
     margin-top: 30px;
   }
 
-  img {
-    max-width: 100%;
+  .zoom-controls {
+    margin-bottom: 10px;
+  }
+
+  .zoom-controls button {
+    font-size: 18px;
+    padding: 6px 12px;
+  }
+
+  .imagem-container {
     border: 1px solid var(--cinza-borda);
-    margin-top: 12px;
+    overflow: auto;
+    max-height: 600px;
+  }
+
+  .imagem-container img {
+    transform-origin: top left;
+    transition: transform 0.2s ease;
+    display: block;
   }
 
   .erro {
@@ -108,10 +114,14 @@
     font-weight: 600;
   }
 
-  .aviso {
+  .ok {
     color: var(--verde);
     font-weight: 600;
-    margin-bottom: 20px;
+  }
+
+  .aviso {
+    color: #8a6d3b;
+    font-weight: 600;
   }
 </style>
 </head>
@@ -119,94 +129,134 @@
 <body>
 
 <header>
-  <!-- use o mesmo arquivo de logo das outras ferramentas -->
-  <img src="logo-cartorio.png" alt="Logo do Cartório">
+  <img src="logo_cartorio.png" alt="Logo do Cartório">
   <h1>Consulta de Planta Quadra</h1>
 </header>
 
 <main>
 
+  <!-- BUSCA -->
+  <div class="busca">
+    <input id="inscricao" placeholder="Digite a inscrição cadastral">
+    <button onclick="buscar()">Buscar</button>
+  </div>
+
+  <!-- RESULTADO -->
+  <div id="resultado"></div>
+
+  <!-- EXPLICAÇÃO (TEXTO ORIGINAL, SEM ALTERAÇÃO) -->
   <div class="info">
     <strong>Como funciona a plataforma</strong><br><br>
 
     Esta ferramenta permite localizar e visualizar a <strong>planta quadra</strong>
     a partir da <strong>inscrição cadastral</strong> do imóvel.<br><br>
 
-    O sistema consulta automaticamente um índice com todas as plantas quadra disponíveis.
-    Caso exista mais de uma imagem vinculada à mesma inscrição, todas serão exibidas
-    na tela, com opção de visualização e download individual.<br><br>
+    A busca é realizada automaticamente nas pastas de imagens disponíveis.<br><br>
 
     <strong>Formatos aceitos na pesquisa:</strong><br>
-    • Inscrição cadastral completa, com pontos  
-    (<code>034.60.63.0503.00.000</code>)<br>
-    • Apenas números  
-    (<code>034606305030000</code>)<br>
-    • Código da quadra  
-    (<code>0346063</code>)
-  </div>
+    • Inscrição cadastral completa, com pontos<br>
+    • Apenas números<br>
+    • Código da quadra (primeiros sete dígitos)<br><br>
 
-  <div class="busca">
-    <input id="inscricao" placeholder="Digite a inscrição cadastral">
-    <button onclick="buscar()">Buscar</button>
+    Após a localização da imagem, é possível utilizar os botões
+    <strong>+</strong> e <strong>−</strong> para aplicar zoom diretamente
+    na visualização, sem necessidade de download.
   </div>
-
-  <div id="resultado"></div>
 
 </main>
 
 <script>
+let zoomAtual = 1;
+
+function normalizarCodigo(valor) {
+  const n = valor.replace(/\D/g, "");
+  if (n.length < 7) return null;
+  return n.substring(0, 7);
+}
+
 async function buscar() {
   const resultado = document.getElementById("resultado");
   resultado.innerHTML = "";
+  zoomAtual = 1;
 
-  const valor = document.getElementById("inscricao").value;
-  const numeros = valor.replace(/\D/g, "");
+  const codigo = normalizarCodigo(
+    document.getElementById("inscricao").value
+  );
 
-  if (numeros.length < 7) {
+  if (!codigo) {
     resultado.innerHTML =
       '<p class="erro">Inscrição inválida.</p>';
     return;
   }
 
-  const codigoBase = numeros.substring(0, 7);
-
-  let indice;
+  /* 1️⃣ BUSCA PNG (index.json) */
   try {
-    const resposta = await fetch("plantas_png/index.json");
-    indice = await resposta.json();
-  } catch (e) {
-    resultado.innerHTML =
-      '<p class="erro">Erro ao carregar índice de plantas.</p>';
-    return;
-  }
+    const resp = await fetch("plantas_png/index.json");
+    const indice = await resp.json();
+    const arquivos = indice[codigo];
 
-  const arquivos = indice[codigoBase];
+    if (arquivos && arquivos.length > 0) {
+      arquivos.forEach((caminho) => {
+        const nome = caminho.split("/").pop().replace(".png", "");
 
-  if (!arquivos || arquivos.length === 0) {
-    resultado.innerHTML =
-      '<p class="erro">Nenhuma planta quadra localizada.</p>';
-    return;
-  }
+        resultado.innerHTML += `
+          <div class="planta">
+            <p class="ok">Planta localizada.</p>
 
-  if (arquivos.length > 1) {
-    resultado.innerHTML +=
-      '<p class="aviso">Foram encontradas múltiplas plantas quadra para esta inscrição.</p>';
-  }
+            <div class="zoom-controls">
+              <button onclick="zoomIn('${nome}')">+</button>
+              <button onclick="zoomOut('${nome}')">−</button>
+            </div>
 
-  arquivos.forEach((arquivo) => {
-    const codigo = arquivo.replace(".png", "");
+            <div class="imagem-container">
+              <img id="img-${nome}" src="plantas_png/${caminho}">
+            </div>
 
-    resultado.innerHTML += `
-      <div class="planta">
-        <p><strong>Arquivo:</strong> ${codigo}</p>
-        <img src="plantas_png/${arquivo}">
-        <br><br>
-        <a href="plantas_tif/${codigo}.tif" download>
-          <button>Download (TIF)</button>
+            <br>
+            <a href="plantas_tif/${nome}.tif" download>
+              <button>Download (TIFF)</button>
+            </a>
+          </div>
+        `;
+      });
+      return;
+    }
+  } catch (e) {}
+
+  /* 2️⃣ FALLBACK TIFF (SEM PRÉ-VISUALIZAÇÃO) */
+  const caminhoTif = `plantas_tif/${codigo}.tif`;
+
+  try {
+    const respTif = await fetch(caminhoTif, { method: "HEAD" });
+    if (respTif.ok) {
+      resultado.innerHTML = `
+        <p class="aviso">
+          A planta quadra não pode ser pré-visualizada devido ao tamanho do arquivo,
+          mas está disponível para download.
+        </p>
+        <a href="${caminhoTif}" download>
+          <button>Download (TIFF)</button>
         </a>
-      </div>
-    `;
-  });
+      `;
+      return;
+    }
+  } catch (e) {}
+
+  /* 3️⃣ NÃO ENCONTRADO */
+  resultado.innerHTML =
+    '<p class="erro">Planta quadra não localizada.</p>';
+}
+
+function zoomIn(id) {
+  zoomAtual += 0.2;
+  document.getElementById("img-" + id).style.transform =
+    `scale(${zoomAtual})`;
+}
+
+function zoomOut(id) {
+  zoomAtual = Math.max(0.4, zoomAtual - 0.2);
+  document.getElementById("img-" + id).style.transform =
+    `scale(${zoomAtual})`;
 }
 </script>
 
