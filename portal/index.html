@@ -98,6 +98,74 @@
     height: 100%;
     border: none;
   }
+
+  /* MODAL "EM OBRAS" */
+  .modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 16px;
+  }
+
+  .modal {
+    width: 100%;
+    max-width: 520px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.2);
+    overflow: hidden;
+  }
+
+  .modal-header {
+    padding: 16px 18px;
+    border-bottom: 4px solid var(--vinho);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .modal-header h2 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--vinho);
+  }
+
+  .modal-close {
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .modal-body {
+    padding: 18px;
+    color: #222;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .modal-footer {
+    padding: 14px 18px 18px 18px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn-ok {
+    background: var(--verde);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    padding: 10px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
 </style>
 </head>
 
@@ -132,6 +200,13 @@
         <img src="icons/acervo.svg">
         Acervo
       </div>
+
+      <!-- ✅ NOVO ITEM -->
+      <div class="menu-item" onclick="emObras('Certidão de Valor Venal')">
+        <img src="icons/consulta.svg">
+        Valor Venal
+      </div>
+
     </nav>
   </aside>
 
@@ -142,6 +217,22 @@
 
 </div>
 
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg" onclick="fecharModal(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitulo" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2 id="modalTitulo">Em obras</h2>
+      <button class="modal-close" onclick="fecharModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalTexto">
+      Esta ferramenta ainda está em desenvolvimento e será disponibilizada em breve.
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ok" onclick="fecharModal()">Entendi</button>
+    </div>
+  </div>
+</div>
+
 <script>
   function abrir(pasta, el) {
     document.querySelectorAll('.menu-item')
@@ -150,6 +241,32 @@
     el.classList.add('active');
     document.getElementById('frame').src = `../${pasta}/index.html`;
   }
+
+  function emObras(nomeFerramenta) {
+    const bg = document.getElementById("modalBg");
+    const titulo = document.getElementById("modalTitulo");
+    const texto = document.getElementById("modalTexto");
+
+    titulo.innerText = "Em obras";
+    texto.innerText = `A ferramenta "${nomeFerramenta}" ainda está em desenvolvimento e será disponibilizada em breve.`;
+
+    bg.style.display = "flex";
+  }
+
+  function fecharModal(event) {
+    // se clicar no fundo, fecha
+    const bg = document.getElementById("modalBg");
+    if (!event || event.target === bg) {
+      bg.style.display = "none";
+    }
+  }
+
+  // ESC fecha modal
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      document.getElementById("modalBg").style.display = "none";
+    }
+  });
 </script>
 
 </body>
