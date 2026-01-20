@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Manual Prático do Registro de Imóveis</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='manual_pratico/manual_pratico.css') }}">
+</head>
+
+<body>
+  <main class="page">
+
+    <section class="header">
+      <div class="logo-wrap">
+        <img
+          src="{{ url_for('static', filename='img/logo_cartorio.png') }}"
+          alt="2º Registro de Imóveis e Anexos de Guarulhos"
+          class="logo"
+          onerror="this.style.display='none';"
+        />
+      </div>
+
+      <h1 class="title">Manual Prático do Registro de Imóveis</h1>
+
+      <p class="subtitle">
+        Este material foi elaborado com base no documento:
+        <strong>MANUAL PRÁTICO DO REGISTRO DE IMÓVEIS</strong>,
+        de Alberto Gentil de Almeida Pedroso e Ralpho Waldo de Barros Monteiro Filho – ARISP.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="field">
+        <label for="temaSelect" class="label">Selecionar tema</label>
+
+        <select id="temaSelect" class="select">
+          <option value="">Selecione um tema</option>
+        </select>
+      </div>
+
+      <div class="divider"></div>
+
+      <div id="topicContent" class="topic-content">
+        <div class="placeholder">
+          <p class="placeholder-title">Selecione um tema para visualizar o conteúdo</p>
+          <p class="placeholder-subtitle">
+            A navegação está organizada por tópicos em ordem alfabética para facilitar a consulta.
+          </p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="btnLimpar" class="btn secondary" type="button">
+          Limpar
+        </button>
+
+        <button id="btnTopo" class="btn primary" type="button">
+          Voltar ao topo
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='manual_pratico/manual_pratico.js') }}"></script>
+</body>
+</html>
