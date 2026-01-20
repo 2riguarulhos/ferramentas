@@ -1,6 +1,6 @@
 :root{
-  --vinho: #7b1b1b;
-  --verde: #2e5d46;
+  --vinho: #7a1f2b;
+  --verde: #2e6b4f;
 
   --bg: #ffffff;
   --text: #1f1f1f;
@@ -13,8 +13,11 @@
 
   --radius: 14px;
 
-  --font-title: "Aptos Display", "Segoe UI", Arial, sans-serif;
-  --font-body: "Segoe UI", Arial, sans-serif;
+  --font-title: "Aptos Display", "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+  --font-body: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+
+  /* Cara de livro */
+  --book-font: Georgia, "Times New Roman", serif;
 }
 
 *{ box-sizing: border-box; }
@@ -32,8 +35,7 @@ html, body{
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  padding: 32px 18px 60px;
+  padding: 28px 18px 60px;
 }
 
 .header{
@@ -50,7 +52,7 @@ html, body{
 }
 
 .logo{
-  max-height: 110px;
+  max-height: 105px;
   object-fit: contain;
 }
 
@@ -63,10 +65,10 @@ html, body{
 
 .subtitle{
   margin: 0 auto;
-  max-width: 850px;
+  max-width: 860px;
   color: var(--muted);
   line-height: 1.45;
-  font-size: 14px;
+  font-size: 13.5px;
 }
 
 .card{
@@ -87,8 +89,9 @@ html, body{
 }
 
 .label{
-  font-weight: 600;
+  font-weight: 800;
   color: var(--vinho);
+  letter-spacing: 0.2px;
 }
 
 .select{
@@ -102,8 +105,8 @@ html, body{
 }
 
 .select:focus{
-  border-color: rgba(123, 27, 27, 0.55);
-  box-shadow: 0 0 0 3px rgba(123, 27, 27, 0.12);
+  border-color: rgba(122, 31, 43, 0.55);
+  box-shadow: 0 0 0 3px rgba(122, 31, 43, 0.12);
 }
 
 .divider{
@@ -113,19 +116,18 @@ html, body{
 }
 
 .topic-content{
-  min-height: 260px;
-  padding: 4px 2px 2px;
+  min-height: 320px;
 }
 
 .placeholder{
   text-align: center;
-  padding: 40px 10px;
+  padding: 46px 10px;
 }
 
 .placeholder-title{
   margin: 0;
   color: var(--vinho);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 16px;
 }
 
@@ -136,27 +138,160 @@ html, body{
   line-height: 1.4;
 }
 
+/* Caixa do tema */
 .topic-box{
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 16px;
+  padding: 18px;
 }
 
 .topic-title{
-  margin: 0 0 10px;
+  margin: 0 0 14px;
   color: var(--vinho);
   font-family: var(--font-title);
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .topic-text{
-  color: var(--text);
-  line-height: 1.55;
   font-size: 14px;
-  white-space: pre-wrap;
+  color: var(--text);
 }
 
+/* ========================================================= */
+/* ESTILO LIVRO                                               */
+/* ========================================================= */
+
+.book{
+  font-family: var(--book-font);
+  font-size: 15px;
+  line-height: 1.7;
+  color: #1a1a1a;
+}
+
+.book .sec-title{
+  font-family: var(--font-title);
+  font-weight: 900;
+  color: #111;
+  font-size: 15px;
+  letter-spacing: 0.4px;
+  margin: 22px 0 10px;
+}
+
+.book .sec-line{
+  height: 2px;
+  background: #111;
+  opacity: 0.18;
+  margin: 0 0 18px;
+}
+
+.book p{
+  margin: 0 0 10px;
+  text-align: justify;
+  text-justify: inter-word;
+  text-indent: 28px;
+}
+
+.book p.no-indent{
+  text-indent: 0;
+}
+
+.book .book-divider{
+  height: 2px;
+  background: #111;
+  opacity: 0.18;
+  margin: 22px 0 18px;
+}
+
+/* ========================================================= */
+/* JURISPRUDÊNCIA (melhor leitura)                            */
+/* ========================================================= */
+
+.juris{
+  margin-top: 8px;
+}
+
+.juris .tipo{
+  font-family: var(--font-title);
+  font-weight: 900;
+  margin: 0 0 12px;
+  color: #111;
+}
+
+/* bloco de jurisprudência (parece livro mesmo) */
+.juris .bloco{
+  background: #fafafa;
+  border: 1px solid #ededed;
+  border-radius: 12px;
+  padding: 14px 14px;
+  margin: 10px 0;
+}
+
+.juris .bloco p{
+  text-indent: 0;
+  margin: 0;
+  font-size: 14.6px;
+  line-height: 1.65;
+}
+
+/* ========================================================= */
+/* MODELOS                                                    */
+/* ========================================================= */
+
+.modelos-wrap{
+  margin-top: 28px;
+}
+
+.modelos-title{
+  text-align: center;
+  font-family: var(--font-title);
+  font-weight: 900;
+  color: #111;
+  letter-spacing: 0.6px;
+  margin: 0 0 8px;
+}
+
+.modelos-subtitle{
+  text-align: center;
+  font-family: var(--font-title);
+  font-weight: 800;
+  margin: 0 0 16px;
+  color: #111;
+}
+
+.modelo-card{
+  background: #f7f7f7;
+  border: 1px solid #ededed;
+  border-radius: 14px;
+  padding: 16px 16px;
+  margin: 14px 0;
+}
+
+.modelo-card .modelo-head{
+  font-family: var(--font-title);
+  font-weight: 900;
+  color: #111;
+  margin: 0 0 10px;
+}
+
+.modelo-card p{
+  margin: 0 0 10px;
+  text-indent: 0;
+  text-align: justify;
+  font-family: var(--book-font);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.modelo-card .assinatura{
+  margin-top: 12px;
+}
+
+.modelo-card .assinatura strong{
+  font-family: var(--font-title);
+}
+
+/* Botões */
 .actions{
   display: flex;
   justify-content: flex-end;
@@ -169,7 +304,7 @@ html, body{
   border-radius: 10px;
   padding: 10px 14px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 800;
   font-size: 14px;
 }
 
