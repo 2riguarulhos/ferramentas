@@ -54,7 +54,11 @@ async function carregarTema(file, label){
     content.innerHTML = `
       <div class="topic-box">
         <h2 class="topic-title">${label}</h2>
-        <div class="topic-text">${html}</div>
+        <div class="topic-text">
+          <div class="book">
+            ${html}
+          </div>
+        </div>
       </div>
     `;
   }catch(err){
@@ -109,14 +113,14 @@ function bindBotoes(){
         <p class="placeholder-title">Selecione um tema para visualizar o conteúdo</p>
         <p class="placeholder-subtitle">
           A navegação está organizada por tópicos em ordem alfabética para facilitar a consulta.
-          </p>
-        </div>
-      `;
-    });
+        </p>
+      </div>
+    `;
+  });
 
-    el("btnTopo").addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+  el("btnTopo").addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
