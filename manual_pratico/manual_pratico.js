@@ -1,118 +1,32 @@
-// Lista alfabética (EXATAMENTE os títulos do sumário)
-// Cada item aponta para um arquivo HTML dentro de /static/manual_pratico_topics/
 const TEMAS = [
-  {
-    label: "Alienação Fiduciária",
-    file: "alienacao_fiduciaria.html"
-  },
-  {
-    label: "Anticrese",
-    file: "anticrese.html"
-  },
-  {
-    label: "Área de Reserva Legal e Área de Preservação Permanente",
-    file: "area_reserva_legal_app.html"
-  },
-  {
-    label: "Averbação Premonitórias",
-    file: "averbacao_premonitorias.html"
-  },
-  {
-    label: "Cartas de Arrematação, de Adjudicação, de Adjudicação e de Homologação de Sentença Estrangeira",
-    file: "cartas_arrematacao_adjudicacao_sentenca_estrangeira.html"
-  },
-  {
-    label: "Cédulas de Crédito",
-    file: "cedulas_credito.html"
-  },
-  {
-    label: "Citações em Ações Reais e Ações Pessoais Reipersecutórias",
-    file: "citacoes_acoes_reais_reipersecutorias.html"
-  },
-  {
-    label: "Compromisso de Compra e Venda",
-    file: "compromisso_compra_venda.html"
-  },
-  {
-    label: "Compra e Venda",
-    file: "compra_venda.html"
-  },
-  {
-    label: "Constrições Judiciais: Penhora, Arresto e Sequestro",
-    file: "constricoes_judiciais_penhora_arresto_sequestro.html"
-  },
-  {
-    label: "Contrato de Locação de Prédios com Cláusula de Vigência",
-    file: "contrato_locacao_vigencia.html"
-  },
-  {
-    label: "Dação em Pagamento",
-    file: "dacao_pagamento.html"
-  },
-  {
-    label: "Doação",
-    file: "doacao.html"
-  },
-  {
-    label: "Enfiteuse",
-    file: "enfiteuse.html"
-  },
-  {
-    label: "Hipoteca",
-    file: "hipoteca.html"
-  },
-  {
-    label: "Imissão Provisória na Posse",
-    file: "imissao_provisoria_posse.html"
-  },
-  {
-    label: "Incorporações, Instituições e Convenções Condominiais",
-    file: "incorporacoes_condominio.html"
-  },
-  {
-    label: "Parcelamento do Solo (loteamento e desmembramento)",
-    file: "parcelamento_solo_loteamento_desmembramento.html"
-  },
-  {
-    label: "Penhor de Máquina e Aparelhos",
-    file: "penhor_maquina_aparelhos.html"
-  },
-  {
-    label: "Penhor Rural",
-    file: "penhor_rural.html"
-  },
-  {
-    label: "Permuta",
-    file: "permuta.html"
-  },
-  {
-    label: "Procedimento de Dúvida Imobiliária (Cap. XX, das NSCGJSP).",
-    file: "procedimento_duvida_imobiliaria.html"
-  },
-  {
-    label: "Servidões Prediais",
-    file: "servidoes_prediais.html"
-  },
-  {
-    label: "Títulos Judiciais",
-    file: "titulos_judiciais.html"
-  },
-  {
-    label: "Títulos oriundos de Inventários ou Arrolamentos",
-    file: "titulos_inventarios_arrolamentos.html"
-  },
-  {
-    label: "Tombamento",
-    file: "tombamento.html"
-  },
-  {
-    label: "Usucapião",
-    file: "usucapiao.html"
-  },
-  {
-    label: "Usufruto, Uso e Habitação",
-    file: "usufruto_uso_habitacao.html"
-  }
+  { label: "Alienação Fiduciária", file: "alienacao_fiduciaria.html" },
+  { label: "Anticrese", file: "anticrese.html" },
+  { label: "Área de Reserva Legal e Área de Preservação Permanente", file: "area_reserva_legal_app.html" },
+  { label: "Averbação Premonitórias", file: "averbacao_premonitorias.html" },
+  { label: "Cartas de Arrematação, de Adjudicação, de Adjudicação e de Homologação de Sentença Estrangeira", file: "cartas_arrematacao_adjudicacao_sentenca_estrangeira.html" },
+  { label: "Cédulas de Crédito", file: "cedulas_credito.html" },
+  { label: "Citações em Ações Reais e Ações Pessoais Reipersecutórias", file: "citacoes_acoes_reais_reipersecutorias.html" },
+  { label: "Compromisso de Compra e Venda", file: "compromisso_compra_venda.html" },
+  { label: "Compra e Venda", file: "compra_venda.html" },
+  { label: "Constrições Judiciais: Penhora, Arresto e Sequestro", file: "constricoes_judiciais_penhora_arresto_sequestro.html" },
+  { label: "Contrato de Locação de Prédios com Cláusula de Vigência", file: "contrato_locacao_vigencia.html" },
+  { label: "Dação em Pagamento", file: "dacao_pagamento.html" },
+  { label: "Doação", file: "doacao.html" },
+  { label: "Enfiteuse", file: "enfiteuse.html" },
+  { label: "Hipoteca", file: "hipoteca.html" },
+  { label: "Imissão Provisória na Posse", file: "imissao_provisoria_posse.html" },
+  { label: "Incorporações, Instituições e Convenções Condominiais", file: "incorporacoes_condominio.html" },
+  { label: "Parcelamento do Solo (loteamento e desmembramento)", file: "parcelamento_solo_loteamento_desmembramento.html" },
+  { label: "Penhor de Máquina e Aparelhos", file: "penhor_maquina_aparelhos.html" },
+  { label: "Penhor Rural", file: "penhor_rural.html" },
+  { label: "Permuta", file: "permuta.html" },
+  { label: "Procedimento de Dúvida Imobiliária (Cap. XX, das NSCGJSP).", file: "procedimento_duvida_imobiliaria.html" },
+  { label: "Servidões Prediais", file: "servidoes_prediais.html" },
+  { label: "Títulos Judiciais", file: "titulos_judiciais.html" },
+  { label: "Títulos oriundos de Inventários ou Arrolamentos", file: "titulos_inventarios_arrolamentos.html" },
+  { label: "Tombamento", file: "tombamento.html" },
+  { label: "Usucapião", file: "usucapiao.html" },
+  { label: "Usufruto, Uso e Habitação", file: "usufruto_uso_habitacao.html" }
 ];
 
 function el(id){
@@ -130,10 +44,10 @@ async function carregarTema(file, label){
   `;
 
   try{
-    // Carrega o HTML cru do tema (texto colado do livro)
-    const res = await fetch(`/static/manual_pratico_topics/${file}`);
+    // ✅ Aqui é o ponto principal: buscar dentro da pasta topics/
+    const res = await fetch(`topics/${file}`);
     if(!res.ok){
-      throw new Error("Falha ao carregar o arquivo do tema.");
+      throw new Error("Arquivo do tema não encontrado.");
     }
 
     const html = await res.text();
@@ -169,6 +83,7 @@ function preencherSelect(){
 
   select.addEventListener("change", () => {
     const file = select.value;
+
     if(!file){
       el("topicContent").innerHTML = `
         <div class="placeholder">
