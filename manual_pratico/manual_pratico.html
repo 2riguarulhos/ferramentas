@@ -6,7 +6,7 @@
 
   <title>Manual Prático do Registro de Imóveis</title>
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='manual_pratico/manual_pratico.css') }}">
+  <link rel="stylesheet" href="manual_pratico.css">
 </head>
 
 <body>
@@ -14,8 +14,9 @@
 
     <section class="header">
       <div class="logo-wrap">
+        <!-- Se seu portal tiver logo em outra pasta, ajusta o caminho -->
         <img
-          src="{{ url_for('static', filename='img/logo_cartorio.png') }}"
+          src="../portal/img/logo_cartorio.png"
           alt="2º Registro de Imóveis e Anexos de Guarulhos"
           class="logo"
           onerror="this.style.display='none';"
@@ -64,6 +65,6 @@
 
   </main>
 
-  <script src="{{ url_for('static', filename='manual_pratico/manual_pratico.js') }}"></script>
+  <script src="manual_pratico.js"></script>
 </body>
 </html>
