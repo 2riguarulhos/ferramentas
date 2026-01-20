@@ -44,10 +44,9 @@ async function carregarTema(file, label){
   `;
 
   try{
-    // ✅ Aqui é o ponto principal: buscar dentro da pasta topics/
     const res = await fetch(`topics/${file}`);
     if(!res.ok){
-      throw new Error("Arquivo do tema não encontrado.");
+      throw new Error("Arquivo do tema não encontrado (topics/).");
     }
 
     const html = await res.text();
@@ -110,14 +109,14 @@ function bindBotoes(){
         <p class="placeholder-title">Selecione um tema para visualizar o conteúdo</p>
         <p class="placeholder-subtitle">
           A navegação está organizada por tópicos em ordem alfabética para facilitar a consulta.
-        </p>
-      </div>
-    `;
-  });
+          </p>
+        </div>
+      `;
+    });
 
-  el("btnTopo").addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+    el("btnTopo").addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
