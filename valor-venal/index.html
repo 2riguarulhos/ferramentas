@@ -6,44 +6,127 @@
   <title>Certidão Valor Venal</title>
 
   <style>
-    body{font-family:Arial;margin:0;padding:24px;background:#f6f6f6;}
-    .card{max-width:860px;margin:0 auto;background:#fff;padding:18px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08);}
-    h2{margin:0 0 12px 0;color:#6a0f2b;}
-    p{color:#333;line-height:1.4;}
-    a.btn{
-      display:inline-block;
-      margin-top:12px;
-      padding:12px 14px;
-      background:#1f6f4a;
-      color:#fff;
-      border-radius:12px;
-      text-decoration:none;
+    :root {
+      --vinho: #7a1f2b;
+      --verde: #2e6b4f;
+      --cinza-fundo: #f5f5f5;
+      --cinza-menu: #efefef;
+      --cinza-borda: #d0d0d0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body{
+      margin:0;
+      font-family:"Aptos Display","Segoe UI Variable","Segoe UI",system-ui,sans-serif;
+      background:#fff;
+    }
+
+    /* Ocupa 100% do iframe do portal */
+    .wrap{
+      width:100%;
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      background:#fff;
+    }
+
+    .topbar{
+      padding:14px 16px;
+      border-bottom:4px solid var(--vinho);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .topbar h2{
+      margin:0;
+      font-size:16px;
+      color:var(--vinho);
       font-weight:800;
     }
-    code{background:#eee;padding:3px 6px;border-radius:8px;}
+
+    .actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:none;
+      background:var(--verde);
+      color:#fff;
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:800;
+      font-size:13px;
+      text-decoration:none;
+      display:inline-block;
+      white-space:nowrap;
+    }
+
+    .btn-outline{
+      background:#fff;
+      color:#111;
+      border:1px solid #cfcfcf;
+      font-weight:800;
+    }
+
+    .frame-box{
+      flex:1;
+      width:100%;
+      height:100%;
+    }
+
+    iframe{
+      width:100%;
+      height:100%;
+      border:0;
+    }
+
+    .hint{
+      padding:10px 16px;
+      font-size:12px;
+      color:#666;
+      border-top:1px solid #eee;
+      background:#fafafa;
+    }
   </style>
 </head>
+
 <body>
-  <div class="card">
-    <h2>Certidão de Valor Venal</h2>
+  <div class="wrap">
+    <div class="topbar">
+      <h2>Certidão de Valor Venal</h2>
 
-    <p>
-      Esta ferramenta roda no servidor interno do cartório (VM).
-    </p>
+      <div class="actions">
+        <button class="btn btn-outline" onclick="recarregar()">Recarregar</button>
 
-    <p>
-      Clique no botão abaixo para abrir:
-    </p>
+        <!-- opcional: abrir em nova aba se alguém quiser -->
+        <a class="btn" href="http://192.168.0.37:5050" target="_blank" rel="noopener noreferrer">
+          Abrir em nova aba
+        </a>
+      </div>
+    </div>
 
-    <a class="btn" href="http://192.168.0.14:5000" target="_blank">
-      Abrir ferramenta (VM)
-    </a>
+    <div class="frame-box">
+      <iframe id="vvFrame" src="http://192.168.0.37:5050"></iframe>
+    </div>
 
-    <p style="margin-top:14px;font-size:12px;color:#666;">
-      Se não abrir, verifique se você está conectado na rede interna do cartório.
-      Endereço: <code>http://192.168.0.14:5000</code>
-    </p>
+    <div class="hint">
+      Se não carregar, verifique se você está na rede interna do cartório.
+      Endereço: <b>http://192.168.0.37:5050</b>
+    </div>
   </div>
+
+  <script>
+    function recarregar(){
+      const f = document.getElementById("vvFrame");
+      f.src = f.src;
+    }
+  </script>
 </body>
 </html>
-
