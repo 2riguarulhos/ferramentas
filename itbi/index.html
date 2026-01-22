@@ -329,27 +329,32 @@
         const resp = await fetch(`${API_BASE}/api/consultar_itbi`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nosso_numero: nossoNumero })
+          body: JSON.stringify({
+            nosso_numero: nossoNumero,
+            nossoNumero: nossoNumero
+          })
         });
 
         const data = await resp.json().catch(() => null);
 
-        if (!resp.ok) {
-          const msg = data?.erro || "Falha ao consultar ITBI.";
-          const detalhe = data?.detalhe || `HTTP ${resp.status}`;
+        // ✅ ALTERAÇÃO MÍNIMA: agora lê as chaves certas do server.py
+        if (!resp.ok || !data?.ok) {
+          const msg = data?.error || "Falha ao consultar ITBI.";
+          const detalhe = data?.details || `HTTP ${resp.status}`;
           showErro(msg, detalhe);
           setLoading(false);
           return;
         }
 
-        if (!data?.arquivo) {
-          showErro("Resposta inválida do servidor.", "Não veio o nome do arquivo do print.");
+        // ✅ ALTERAÇÃO MÍNIMA: agora usa preview_url (e não "arquivo")
+        if (!data?.preview_url) {
+          showErro("Resposta inválida do servidor.", "Não veio o link da imagem do resultado.");
           setLoading(false);
           return;
         }
 
-        // Cache-buster pra não ficar mostrando imagem antiga
-        const urlImagem = `${API_BASE}/preview/${encodeURIComponent(data.arquivo)}?t=${Date.now()}`;
+        // ✅ ALTERAÇÃO MÍNIMA: monta a URL final certa
+        const urlImagem = `${API_BASE}${data.preview_url}?t=${Date.now()}`;
 
         imgResultado.onload = () => {
           placeholder.style.display = "none";
