@@ -1,1 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consulta de pagamento - ITBI</title>
+
+  <style>
+    :root{
+      --vinho:#7a1730;
+      --verde:#2f6b4f;
+      --cinza:#f4f5f7;
+      --borda:#e5e7eb;
+      --texto:#111827;
+      --muted:#6b7280;
+      --erro-bg:#fde8e8;
+      --erro-borda:#fca5a5;
+      --erro-texto:#7f1d1d;
+      --radius:18px;
+      --shadow:0 12px 35px rgba(0,0,0,.08);
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: "Aptos Display","Aptos","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+      background: var(--cinza);
+      color: var(--texto);
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 30px auto;
+      padding: 0 16px;
+    }
+
+    .card{
+      background:#fff;
+      border:1px solid var(--borda);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header{
+      padding: 26px 28px 18px 28px;
+      border-bottom:1px solid var(--borda);
+    }
+
+    .title{
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--vinho);
+      margin: 0 0 12px 0;
+    }
+
+    .divider{
+      height: 3px;
+      width: 100%;
+      background: var(--vinho);
+      opacity:.9;
+      border-radius: 99px;
+    }
+
+    .content{
+      padding: 24px 28px 28px 28px;
+    }
+
+    label{
+      display:block;
+      font-weight: 700;
+      margin: 12px 0 10px 0;
+    }
+
+    input[type="text"]{
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border:1px solid var(--borda);
+      font-size: 16px;
+      outline: none;
+      transition: .15s ease;
+    }
+    input[type="text"]:focus{
+      border-color: rgba(122, 23, 48, .55);
+      box-shadow: 0 0 0 3px rgba(122, 23, 48, .10);
+    }
+
+    .actions{
+      display:flex;
+      gap: 14px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    button{
+      appearance:none;
+      border:0;
+      cursor:pointer;
+      padding: 15px 20px;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      min-width: 210px;
+      transition: .15s ease;
+    }
+
+    .btn-primary{
+      background: var(--verde);
+      color:#fff;
+      flex: 1;
+    }
+    .btn-primary:hover{ filter: brightness(0.98); }
+    .btn-primary:disabled{
+      opacity: .65;
+      cursor:not-allowed;
+    }
+
+    .btn-secondary{
+      background: #fff;
+      border: 1px solid var(--borda);
+      color: var(--texto);
+      flex: 1;
+    }
+    .btn-secondary:hover{
+      background:#fafafa;
+    }
+
+    .error{
+      display:none;
+      margin-bottom: 16px;
+      padding: 14px 14px;
+      border:1px solid var(--erro-borda);
+      background: var(--erro-bg);
+      color: var(--erro-texto);
+      border-radius: 14px;
+      position: relative;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .error small{
+      display:block;
+      font-weight: 600;
+      margin-top: 6px;
+      opacity:.95;
+      white-space: pre-wrap;
+    }
+
+    .error .close{
+      position:absolute;
+      right: 12px;
+      top: 10px;
+      background: transparent;
+      color: var(--erro-texto);
+      min-width: auto;
+      padding: 4px 8px;
+      font-size: 18px;
+      font-weight: 900;
+      border-radius: 10px;
+    }
+    .error .close:hover{ background: rgba(0,0,0,.04); }
+
+    .result-box{
+      margin-top: 18px;
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 18px;
+      padding: 18px;
+      min-height: 320px;
+      display:flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      text-align:center;
+    }
+
+    .result-box img{
+      max-width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--borda);
+      background: #fff;
+      box-shadow: 0 10px 25px rgba(0,0,0,.06);
+    }
+
+    .helper{
+      margin-top: 18px;
+      background:#fff;
+      border:1px solid var(--borda);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .helper h3{
+      margin:0 0 10px 0;
+      color: var(--vinho);
+      font-size: 16px;
+    }
+
+    .helper p{
+      margin:0 0 10px 0;
+      color: var(--texto);
+      font-weight: 600;
+    }
+
+    .helper ul{
+      margin: 0;
+      padding-left: 18px;
+      color: var(--texto);
+      font-weight: 600;
+    }
+
+    .muted{
+      font-weight: 600;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="header">
+        <div class="title">Consulta de pagamento - ITBI</div>
+        <div class="divider"></div>
+      </div>
+
+      <div class="content">
+        <div id="errorBox" class="error">
+          <button class="close" onclick="hideError()" title="Fechar">×</button>
+          <div id="errorMsg">Erro ao consultar.</div>
+          <small id="errorDetails"></small>
+        </div>
+
+        <label for="nossoNumero">Nosso Número</label>
+        <input
+          id="nossoNumero"
+          type="text"
+          placeholder="Digite o Nosso Número"
+          inputmode="numeric"
+          autocomplete="off"
+        />
+
+        <div class="actions">
+          <button id="btnVerificar" class="btn-primary" onclick="consultarITBI()">
+            Verificar
+          </button>
+          <button class="btn-secondary" onclick="limpar()">
+            Limpar
+          </button>
+        </div>
+
+        <div id="resultado" class="result-box">
+          <div class="muted">O resultado vai aparecer aqui.</div>
+        </div>
+
+        <div class="helper">
+          <h3>Como funciona a ferramenta</h3>
+          <p>
+            Esta ferramenta consulta automaticamente a <b>situação de pagamento</b> no portal da Prefeitura de Guarulhos, utilizando o campo <b>Nosso Número</b>.
+          </p>
+          <ul>
+            <li>Acessa o portal de validação</li>
+            <li>Preenche o Nosso Número</li>
+            <li>Consulta e exibe o resultado nesta mesma tela</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ✅ TROCA AQUI se o IP/porta da API mudar
+    const API_BASE = "http://192.168.0.37:5056";
+
+    function showError(message, details="") {
+      const box = document.getElementById("errorBox");
+      const msg = document.getElementById("errorMsg");
+      const det = document.getElementById("errorDetails");
+
+      msg.textContent = message || "Erro ao consultar.";
+      det.textContent = details || "";
+      box.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function hideError(){
+      document.getElementById("errorBox").style.display = "none";
+      document.getElementById("errorMsg").textContent = "";
+      document.getElementById("errorDetails").textContent = "";
+    }
+
+    function setLoading(isLoading){
+      const btn = document.getElementById("btnVerificar");
+      btn.disabled = isLoading;
+      btn.textContent = isLoading ? "Consultando..." : "Verificar";
+    }
+
+    function limpar(){
+      hideError();
+      document.getElementById("nossoNumero").value = "";
+      document.getElementById("resultado").innerHTML = `<div class="muted">O resultado vai aparecer aqui.</div>`;
+      document.getElementById("nossoNumero").focus();
+    }
+
+    function normalizarNumero(str){
+      return (str || "").replace(/\D/g, "");
+    }
+
+    async function consultarITBI(){
+      hideError();
+
+      const input = document.getElementById("nossoNumero");
+      const nosso_numero = normalizarNumero(input.value);
+
+      if(!nosso_numero || nosso_numero.length < 6){
+        showError("Nosso Número inválido.", "Digite um número válido (somente números).");
+        return;
+      }
+
+      setLoading(true);
+
+      const resultBox = document.getElementById("resultado");
+      resultBox.innerHTML = `<div class="muted">Consultando no portal da Prefeitura...</div>`;
+
+      try {
+        const resp = await fetch(`${API_BASE}/api/consultar_itbi`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nosso_numero })
+        });
+
+        const data = await resp.json().catch(() => ({}));
+
+        if(!resp.ok){
+          const msg = data?.error || "Erro ao consultar ITBI.";
+          const det = data?.details || "";
+          showError(msg, det);
+          resultBox.innerHTML = `<div class="muted">O resultado vai aparecer aqui.</div>`;
+          setLoading(false);
+          return;
+        }
+
+        // ✅ teu backend normalmente retorna algo tipo:
+        // { ok: true, arquivo: "itbi_resultado_123.png", preview_url: "/preview/itbi_resultado_123.png" }
+        const preview = data?.preview_url || data?.url || null;
+
+        if(!preview){
+          showError("Resposta da API veio sem imagem.", JSON.stringify(data, null, 2));
+          resultBox.innerHTML = `<div class="muted">O resultado vai aparecer aqui.</div>`;
+          setLoading(false);
+          return;
+        }
+
+        // ✅ se vier relativo (/preview/...), cola com API_BASE
+        const imgUrl = preview.startsWith("http") ? preview : `${API_BASE}${preview}`;
+
+        resultBox.innerHTML = `
+          <img src="${imgUrl}?t=${Date.now()}" alt="Resultado ITBI" />
+        `;
+
+      } catch (err) {
+        showError("Falha de comunicação com o servidor (API).", String(err));
+        resultBox.innerHTML = `<div class="muted">O resultado vai aparecer aqui.</div>`;
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // Enter pra consultar
+    document.getElementById("nossoNumero").addEventListener("keydown", (e) => {
+      if(e.key === "Enter"){
+        consultarITBI();
+      }
+    });
+  </script>
+</body>
+</html>
 
