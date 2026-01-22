@@ -1,1 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Consulta de pagamento - ITBI</title>
+
+  <style>
+    :root{
+      --vinho:#7a1f2b;
+      --verde:#2e6b4f;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family:"Aptos Display","Segoe UI Variable","Segoe UI",system-ui,sans-serif;
+      background:#fff;
+    }
+
+    .wrap{
+      width:100%;
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      background:#fff;
+    }
+
+    .mini-bar{
+      padding:10px 14px;
+      border-bottom:3px solid var(--vinho);
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      background:#fff;
+    }
+
+    .btn{
+      border:none;
+      background:var(--verde);
+      color:#fff;
+      padding:8px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:800;
+      font-size:13px;
+      text-decoration:none;
+      display:inline-block;
+      white-space:nowrap;
+    }
+
+    .btn-outline{
+      background:#fff;
+      color:#111;
+      border:1px solid #cfcfcf;
+      font-weight:800;
+    }
+
+    .frame-box{
+      flex:1;
+      width:100%;
+      height:100%;
+    }
+
+    iframe{
+      width:100%;
+      height:100%;
+      border:0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="mini-bar">
+      <button class="btn btn-outline" onclick="recarregar()">Recarregar</button>
+      <a class="btn" href="http://192.168.0.37:5056" target="_blank" rel="noopener noreferrer">
+        Abrir em nova aba
+      </a>
+    </div>
+
+    <div class="frame-box">
+      <iframe id="itbiFrame" src="http://192.168.0.37:5056"></iframe>
+    </div>
+  </div>
+
+  <script>
+    function recarregar(){
+      const f = document.getElementById("itbiFrame");
+      f.src = f.src;
+    }
+  </script>
+</body>
+</html>
 
