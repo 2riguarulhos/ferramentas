@@ -1,9 +1,10 @@
 // automation.js - Certidão de Numeração Oficial (PDF direto via Flask send_file)
+// ✅ Mostra erro real (details) pra diagnosticar rápido
 
 (() => {
   const $ = (id) => document.getElementById(id);
 
-  let API_BASE = "";
+  let API_BASE = (window.API_BASE || "").trim();
 
   function normalizeInscricao(value) {
     return (value || "").toString().replace(/\D/g, "").trim();
@@ -19,16 +20,6 @@
     if (type === "ok") el.classList.add("status-ok");
     else if (type === "err") el.classList.add("status-err");
     else el.classList.add("status-muted");
-  }
-
-  function setApiLabel() {
-    const el = $("apiLabel");
-    if (!el) return;
-
-    const span = el.querySelector(".apiValue");
-    if (!span) return;
-
-    span.textContent = API_BASE || "(não configurada)";
   }
 
   function downloadBlob(blob, filename) {
@@ -47,7 +38,7 @@
     const btnBaixar = $("btnBaixar");
 
     if (!API_BASE) {
-      setStatus("API não configurada. Verifique o data-api no topo da página.", "err");
+      setStatus("API_BASE não configurada.", "err");
       return;
     }
 
@@ -56,7 +47,6 @@
       return;
     }
 
-    // reseta estado anterior
     window.__PDF_BLOB__ = null;
     window.__PDF_FILENAME__ = null;
     if (btnBaixar) btnBaixar.disabled = true;
@@ -73,23 +63,27 @@
       });
 
       if (!res.ok) {
-        // tenta ler JSON de erro
         let msg = `Erro HTTP ${res.status}`;
+
+        // tenta ler json de erro (seu server.py manda)
         try {
           const err = await res.json();
-          msg = err.error || err.message || msg;
+          const error = err.error || err.message;
+          const details = err.details || "";
+
+          if (error && details) msg = `${error}\n\nDetalhes: ${details}`;
+          else if (error) msg = error;
         } catch (_) {}
+
         throw new Error(msg);
       }
 
-      // backend retorna PDF direto
-      const blob = await res.blob();
-
-      // valida minimamente (evita baixar HTML de erro como se fosse PDF)
       const contentType = res.headers.get("content-type") || "";
       if (!contentType.includes("application/pdf")) {
         throw new Error("A resposta não veio como PDF. Verifique o backend.");
       }
+
+      const blob = await res.blob();
 
       window.__PDF_BLOB__ = blob;
       window.__PDF_FILENAME__ = `certidao_numeracao_${inscricao}.pdf`;
@@ -128,16 +122,10 @@
   }
 
   function init() {
-    const apiEl = $("apiLabel");
-    API_BASE = apiEl?.dataset?.api ? apiEl.dataset.api.trim() : "";
-
-    setApiLabel();
-
     $("btnEmitir")?.addEventListener("click", emitirCertidao);
     $("btnBaixar")?.addEventListener("click", baixarPDF);
     $("btnLimpar")?.addEventListener("click", limpar);
 
-    // Estado inicial
     const btnBaixar = $("btnBaixar");
     if (btnBaixar) btnBaixar.disabled = true;
 
