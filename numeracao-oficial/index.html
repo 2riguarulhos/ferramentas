@@ -4,61 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Certidão de Numeração Oficial</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f6f7f9; }
-    .wrap { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
-    .card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 1px 10px rgba(0,0,0,.06); }
-    h1 { margin: 0; font-size: 22px; }
-    p { margin: 6px 0 0; color: #444; }
-    .row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; align-items: end; }
-    .field { flex: 1; min-width: 260px; }
-    label { display: block; font-size: 13px; margin-bottom: 6px; color: #333; }
-    input { width: 100%; padding: 12px 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; }
-    .btns { display: flex; gap: 10px; flex-wrap: wrap; }
-    button { border: 0; padding: 12px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; }
-    #btnEmitir { background: #145a32; color: #fff; }
-    #btnBaixar { background: #eee; color: #111; }
-    #btnLimpar { background: #6b1b1b; color: #fff; }
-    #status { margin-top: 12px; font-size: 14px; }
-    .muted { font-size: 12px; color: #666; margin-top: 4px; }
-    .topline { display:flex; justify-content: space-between; align-items:center; gap: 10px; flex-wrap:wrap; }
-    #apiLabel { font-size: 12px; color:#666; }
-    .status-ok { color: #145a32; font-weight: 700; }
-    .status-err { color: #b00020; font-weight: 700; }
-  </style>
+
+  <link rel="stylesheet" href="./styles.css">
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="card">
-      <div class="topline">
-        <div>
+  <main class="page">
+    <section class="card">
+      <header class="header">
+        <div class="titleBlock">
           <h1>Certidão de Numeração Oficial</h1>
           <p>Emissão automática pelo portal da Prefeitura</p>
         </div>
 
-        <!-- Se quiser manter visível -->
-        <span id="apiLabel" data-api="http://192.168.0.37:5002">API: </span>
-      </div>
+        <!-- Se você quiser deixar escondido, é só apagar essa linha -->
+        <div class="apiInfo" id="apiLabel" data-api="http://192.168.0.37:5002">
+          API: <span class="apiValue">carregando…</span>
+        </div>
+      </header>
 
-      <div class="row">
+      <div class="formGrid">
         <div class="field">
           <label for="inscricao">Inscrição Cadastral</label>
-          <input id="inscricao" placeholder="Digite a inscrição cadastral" />
-          <div class="muted">Aceita com pontos ou somente números.</div>
+          <input
+            id="inscricao"
+            type="text"
+            placeholder="Ex: 094.41.51.0886.00.000"
+            autocomplete="off"
+          />
+          <small>Aceita com pontos ou somente números.</small>
         </div>
 
-        <div class="btns">
-          <button id="btnEmitir">Emitir certidão</button>
-          <button id="btnBaixar">Baixar PDF</button>
-          <button id="btnLimpar">Limpar</button>
+        <div class="actions">
+          <button class="btn btn-primary" id="btnEmitir" type="button">Emitir certidão</button>
+          <button class="btn btn-light" id="btnBaixar" type="button" disabled>Baixar PDF</button>
+          <button class="btn btn-danger" id="btnLimpar" type="button">Limpar</button>
         </div>
       </div>
 
-      <div id="status"></div>
-    </div>
-  </div>
+      <section class="result">
+        <div id="status" class="status status-muted">
+          Preencha a inscrição cadastral e clique em “Emitir certidão”.
+        </div>
+      </section>
+    </section>
+  </main>
 
-  <script src="automation.js"></script>
+  <script src="./automation.js"></script>
 </body>
 </html>
