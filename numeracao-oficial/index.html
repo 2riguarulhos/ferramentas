@@ -2,361 +2,63 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Certidão de Numeração Oficial</title>
-
   <style>
-    :root{
-      --vinho:#6b1d1d;
-      --verde:#1f5c47;
-      --cinza:#f4f5f7;
-      --borda:#e2e5ea;
-      --texto:#111;
-    }
-
-    *{
-      box-sizing:border-box;
-      font-family: "Aptos Display", "Segoe UI", Arial, sans-serif;
-    }
-
-    body{
-      margin:0;
-      background:#fff;
-      color:var(--texto);
-    }
-
-    .page{
-      max-width:1100px;
-      margin:0 auto;
-      padding:18px;
-    }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      border-bottom:4px solid var(--vinho);
-      padding-bottom:12px;
-      margin-bottom:16px;
-    }
-
-    .logo{
-      width:72px;
-      height:72px;
-      object-fit:contain;
-    }
-
-    .topbar-text h1{
-      margin:0;
-      font-size:22px;
-      color:var(--vinho);
-    }
-
-    .topbar-text p{
-      margin:3px 0 0;
-      color:#444;
-      font-size:14px;
-    }
-
-    .card{
-      background:#fff;
-      border:1px solid var(--borda);
-      border-radius:18px;
-      padding:18px;
-      box-shadow:0 8px 22px rgba(0,0,0,0.06);
-    }
-
-    .card h2{
-      margin:0 0 10px;
-      color:var(--vinho);
-      font-size:18px;
-    }
-
-    .form{
-      display:grid;
-      gap:10px;
-      margin-bottom:14px;
-    }
-
-    label{
-      font-weight:600;
-      font-size:14px;
-    }
-
-    input{
-      height:44px;
-      border-radius:12px;
-      border:1px solid var(--borda);
-      padding:0 12px;
-      font-size:15px;
-      outline:none;
-    }
-
-    input:focus{
-      border-color: var(--verde);
-      box-shadow:0 0 0 3px rgba(31,92,71,0.12);
-    }
-
-    .buttons{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    button{
-      height:44px;
-      border-radius:12px;
-      border:none;
-      cursor:pointer;
-      font-weight:700;
-      padding:0 16px;
-      font-size:14px;
-    }
-
-    .btn-primary{
-      background:var(--verde);
-      color:#fff;
-    }
-
-    .btn-secondary{
-      background:#fff;
-      border:1px solid var(--borda);
-      color:#222;
-    }
-
-    .btn-danger{
-      background:var(--vinho);
-      color:#fff;
-    }
-
-    .status{
-      min-height:18px;
-      font-size:14px;
-      color:#333;
-    }
-
-    .viewer{
-      width:100%;
-      height:580px;
-      border-radius:14px;
-      overflow:hidden;
-      border:1px solid var(--borda);
-      background:var(--cinza);
-      margin-top:10px;
-    }
-
-    iframe{
-      width:100%;
-      height:100%;
-      border:none;
-    }
-
-    .info-box{
-      margin-top:16px;
-      border-left:5px solid var(--verde);
-      padding-left:14px;
-    }
-
-    .info-box h3{
-      margin:0 0 8px;
-      color:var(--vinho);
-      font-size:16px;
-    }
-
-    .info-box ul{
-      margin:8px 0 8px 18px;
-    }
-
-    .hint{
-      font-size:13px;
-      color:#555;
-      margin-top:6px;
-    }
-
-    .pill{
-      display:inline-block;
-      padding:4px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:700;
-      background:rgba(107,29,29,0.10);
-      color:var(--vinho);
-      margin-left:8px;
-    }
-
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-    }
-
-    .small{
-      font-size:12px;
-      color:#666;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; background: #f6f7f9; }
+    .wrap { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+    .card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 1px 10px rgba(0,0,0,.06); }
+    h1 { margin: 0; font-size: 22px; }
+    p { margin: 6px 0 0; color: #444; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; align-items: end; }
+    .field { flex: 1; min-width: 260px; }
+    label { display: block; font-size: 13px; margin-bottom: 6px; color: #333; }
+    input { width: 100%; padding: 12px 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; }
+    .btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    button { border: 0; padding: 12px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; }
+    #btnEmitir { background: #145a32; color: #fff; }
+    #btnBaixar { background: #eee; color: #111; }
+    #btnLimpar { background: #6b1b1b; color: #fff; }
+    #status { margin-top: 12px; font-size: 14px; }
+    .muted { font-size: 12px; color: #666; margin-top: 4px; }
+    .topline { display:flex; justify-content: space-between; align-items:center; gap: 10px; flex-wrap:wrap; }
+    #apiLabel { font-size: 12px; color:#666; }
+    .status-ok { color: #145a32; font-weight: 700; }
+    .status-err { color: #b00020; font-weight: 700; }
   </style>
 </head>
 
 <body>
-  <div class="page">
-
-    <header class="topbar">
-      <!-- TROCA AQUI PELO CAMINHO DO LOGO SE VOCÊ JÁ TIVER -->
-      <img src="../portal/assets/logo.png" class="logo" alt="2º Registro de Imóveis de Guarulhos" />
-      <div class="topbar-text">
-        <h1>Certidão de Numeração Oficial <span class="pill">Guarulhos</span></h1>
-        <p>Emissão automática pelo portal da Prefeitura</p>
-      </div>
-    </header>
-
-    <main class="card">
-      <div class="row">
-        <h2>Consultar certidão</h2>
-        <div class="small" id="apiInfo"></div>
-      </div>
-
-      <div class="form">
+  <div class="wrap">
+    <div class="card">
+      <div class="topline">
         <div>
+          <h1>Certidão de Numeração Oficial</h1>
+          <p>Emissão automática pelo portal da Prefeitura</p>
+        </div>
+
+        <!-- Se quiser manter visível -->
+        <span id="apiLabel" data-api="http://192.168.0.37:5002">API: </span>
+      </div>
+
+      <div class="row">
+        <div class="field">
           <label for="inscricao">Inscrição Cadastral</label>
-          <input
-            id="inscricao"
-            type="text"
-            placeholder="Ex.: 094.41.51.0886.00.000 ou 094415108860000"
-            autocomplete="off"
-          />
-          <div class="hint">Aceita com pontos ou somente números.</div>
+          <input id="inscricao" placeholder="Digite a inscrição cadastral" />
+          <div class="muted">Aceita com pontos ou somente números.</div>
         </div>
 
-        <div class="buttons">
-          <button id="btnEmitir" class="btn-primary">Emitir certidão</button>
-          <button id="btnBaixar" class="btn-secondary" disabled>Baixar PDF</button>
-          <button id="btnLimpar" class="btn-danger">Limpar</button>
+        <div class="btns">
+          <button id="btnEmitir">Emitir certidão</button>
+          <button id="btnBaixar">Baixar PDF</button>
+          <button id="btnLimpar">Limpar</button>
         </div>
-
-        <div id="status" class="status"></div>
       </div>
 
-      <div class="viewer">
-        <iframe id="pdfViewer" title="Visualizador PDF"></iframe>
-      </div>
-
-      <section class="info-box">
-        <h3>Fluxo</h3>
-        <ul>
-          <li>Informa a inscrição cadastral</li>
-          <li>O sistema busca a Certidão de Numeração Oficial no portal da Prefeitura</li>
-          <li>O PDF abre aqui e você pode baixar</li>
-        </ul>
-        <p class="hint">
-          Observação: se a inscrição estiver incorreta ou desatualizada, a Prefeitura pode não gerar o documento.
-        </p>
-      </section>
-    </main>
+      <div id="status"></div>
+    </div>
   </div>
 
-  <script>
-    // ✅ AJUSTE AQUI PARA O IP/PORTA DA SUA VM
-    const API_BASE = "http://192.168.0.37:5002";
-
-    const $ = (id) => document.getElementById(id);
-
-    const inputInscricao = $("inscricao");
-    const btnEmitir = $("btnEmitir");
-    const btnLimpar = $("btnLimpar");
-    const btnBaixar = $("btnBaixar");
-    const statusEl = $("status");
-    const pdfViewer = $("pdfViewer");
-    const apiInfo = $("apiInfo");
-
-    let lastPdfBlobUrl = null;
-
-    apiInfo.innerText = `API: ${API_BASE}`;
-
-    function setStatus(msg){
-      statusEl.innerText = msg || "";
-    }
-
-    function limpar(){
-      inputInscricao.value = "";
-      setStatus("");
-      pdfViewer.src = "";
-      btnBaixar.disabled = true;
-
-      if(lastPdfBlobUrl){
-        URL.revokeObjectURL(lastPdfBlobUrl);
-        lastPdfBlobUrl = null;
-      }
-    }
-
-    async function emitir(){
-      const inscricao = inputInscricao.value.trim();
-      if(!inscricao){
-        setStatus("Preencha a inscrição cadastral.");
-        return;
-      }
-
-      setStatus("Emitindo certidão... aguarde.");
-      btnEmitir.disabled = true;
-      btnBaixar.disabled = true;
-
-      try{
-        const resp = await fetch(`${API_BASE}/api/numeracao-oficial`, {
-          method: "POST",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify({inscricao})
-        });
-
-        if(!resp.ok){
-          let err = {};
-          try{ err = await resp.json(); } catch(e){}
-          setStatus(err.error || "Erro ao emitir a certidão.");
-          return;
-        }
-
-        const blob = await resp.blob();
-
-        if(lastPdfBlobUrl){
-          URL.revokeObjectURL(lastPdfBlobUrl);
-          lastPdfBlobUrl = null;
-        }
-
-        lastPdfBlobUrl = URL.createObjectURL(blob);
-        pdfViewer.src = lastPdfBlobUrl;
-
-        btnBaixar.disabled = false;
-        setStatus("Certidão emitida ✅");
-
-      }catch(e){
-        setStatus("Falha de conexão com a API. Verifique se o servidor está ligado.");
-      }finally{
-        btnEmitir.disabled = false;
-      }
-    }
-
-    function baixar(){
-      if(!lastPdfBlobUrl){
-        setStatus("Nenhum PDF carregado ainda.");
-        return;
-      }
-      const a = document.createElement("a");
-      a.href = lastPdfBlobUrl;
-      a.download = "certidao_numeracao_oficial.pdf";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    }
-
-    btnEmitir.addEventListener("click", emitir);
-    btnLimpar.addEventListener("click", limpar);
-    btnBaixar.addEventListener("click", baixar);
-
-    inputInscricao.addEventListener("keydown", (e) => {
-      if(e.key === "Enter"){
-        emitir();
-      }
-    });
-  </script>
+  <script src="automation.js"></script>
 </body>
 </html>
