@@ -1,4 +1,4 @@
-// automation.js - Certidão de Numeração Oficial
+// automation.js - Certidão de Numeração Oficial (PDF direto via Flask send_file)
 
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -31,47 +31,6 @@
     span.textContent = API_BASE || "(não configurada)";
   }
 
-  async function postJSON(path, body) {
-    const url = `${API_BASE}${path}`;
-
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    let data = null;
-    try {
-      data = await res.json();
-    } catch (_) {}
-
-    if (!res.ok) {
-      const msg = (data && (data.error || data.message)) || `Erro HTTP ${res.status}`;
-      throw new Error(msg);
-    }
-
-    if (!data) {
-      throw new Error("Resposta inválida da API (não veio JSON).");
-    }
-
-    return data;
-  }
-
-  function b64toBlob(base64, contentType = "application/pdf") {
-    const byteCharacters = atob(base64);
-    const byteArrays = [];
-
-    const sliceSize = 512;
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) byteNumbers[i] = slice.charCodeAt(i);
-      byteArrays.push(new Uint8Array(byteNumbers));
-    }
-
-    return new Blob(byteArrays, { type: contentType });
-  }
-
   function downloadBlob(blob, filename) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -97,68 +56,69 @@
       return;
     }
 
+    // reseta estado anterior
+    window.__PDF_BLOB__ = null;
+    window.__PDF_FILENAME__ = null;
     if (btnBaixar) btnBaixar.disabled = true;
-    window.__PDF_BASE64__ = null;
-    window.__PDF_URL__ = null;
 
     setStatus("Emitindo certidão…", "muted");
 
     try {
-      // 🔥 AJUSTE AQUI: a rota tem que ser a REAL (igual Valor Venal)
-      const data = await postJSON("/api/numeracao-oficial", {
-  inscricao: inscricao
+      const url = `${API_BASE}/api/numeracao-oficial`;
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ inscricao })
       });
 
-      if (data.ok === false) {
-        throw new Error(data.message || "Não foi possível emitir a Certidão de Numeração Oficial.");
+      if (!res.ok) {
+        // tenta ler JSON de erro
+        let msg = `Erro HTTP ${res.status}`;
+        try {
+          const err = await res.json();
+          msg = err.error || err.message || msg;
+        } catch (_) {}
+        throw new Error(msg);
       }
 
-      if (data.pdf_base64) {
-        window.__PDF_BASE64__ = data.pdf_base64;
-        window.__PDF_FILENAME__ = data.filename || `certidao_numeracao_${inscricao}.pdf`;
-        if (btnBaixar) btnBaixar.disabled = false;
-        setStatus("Certidão emitida com sucesso. Clique em “Baixar PDF”.", "ok");
-        return;
+      // backend retorna PDF direto
+      const blob = await res.blob();
+
+      // valida minimamente (evita baixar HTML de erro como se fosse PDF)
+      const contentType = res.headers.get("content-type") || "";
+      if (!contentType.includes("application/pdf")) {
+        throw new Error("A resposta não veio como PDF. Verifique o backend.");
       }
 
-      if (data.pdf_url) {
-        window.__PDF_URL__ = data.pdf_url;
-        window.__PDF_FILENAME__ = data.filename || `certidao_numeracao_${inscricao}.pdf`;
-        if (btnBaixar) btnBaixar.disabled = false;
-        setStatus("Certidão emitida com sucesso. Clique em “Baixar PDF”.", "ok");
-        return;
-      }
+      window.__PDF_BLOB__ = blob;
+      window.__PDF_FILENAME__ = `certidao_numeracao_${inscricao}.pdf`;
 
-      throw new Error("A API respondeu, mas não retornou PDF (base64/url).");
+      if (btnBaixar) btnBaixar.disabled = false;
+
+      setStatus("Certidão emitida com sucesso. Clique em “Baixar PDF”.", "ok");
     } catch (err) {
       console.error(err);
       setStatus(err.message || "Não foi possível emitir a Certidão de Numeração Oficial.", "err");
     }
   }
 
-  async function baixarPDF() {
+  function baixarPDF() {
     const inscricao = normalizeInscricao($("inscricao")?.value);
 
-    if (window.__PDF_BASE64__) {
-      const blob = b64toBlob(window.__PDF_BASE64__, "application/pdf");
-      downloadBlob(blob, window.__PDF_FILENAME__ || `certidao_numeracao_${inscricao}.pdf`);
+    if (!window.__PDF_BLOB__) {
+      setStatus("Primeiro clique em “Emitir certidão”.", "err");
       return;
     }
 
-    if (window.__PDF_URL__) {
-      window.open(window.__PDF_URL__, "_blank");
-      return;
-    }
-
-    setStatus("Primeiro clique em “Emitir certidão”.", "err");
+    downloadBlob(window.__PDF_BLOB__, window.__PDF_FILENAME__ || `certidao_numeracao_${inscricao}.pdf`);
   }
 
   function limpar() {
     const input = $("inscricao");
     if (input) input.value = "";
 
-    window.__PDF_BASE64__ = null;
-    window.__PDF_URL__ = null;
+    window.__PDF_BLOB__ = null;
     window.__PDF_FILENAME__ = null;
 
     const btnBaixar = $("btnBaixar");
@@ -180,6 +140,7 @@
     // Estado inicial
     const btnBaixar = $("btnBaixar");
     if (btnBaixar) btnBaixar.disabled = true;
+
     setStatus("Preencha a inscrição cadastral e clique em “Emitir certidão”.", "muted");
   }
 
