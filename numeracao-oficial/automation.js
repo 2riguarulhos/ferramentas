@@ -105,8 +105,8 @@
 
     try {
       // 🔥 AJUSTE AQUI: a rota tem que ser a REAL (igual Valor Venal)
-      const data = await postJSON("/api/numeracao-oficial/emitir", {
-        inscricao_cadastral: inscricao
+      const data = await postJSON("/api/numeracao-oficial", {
+  inscricao: inscricao
       });
 
       if (data.ok === false) {
