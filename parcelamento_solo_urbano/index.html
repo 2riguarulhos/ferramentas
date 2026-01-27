@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Parcelamento de Solo Urbano</title>
+  <link rel="stylesheet" href="parcelamento_solo_urbano.css">
+</head>
+<body>
+
+<header class="header">
+  <img src="logo_cartorio.png" alt="Cartório" class="logo">
+  <h1>Parcelamento de Solo Urbano</h1>
+  <p class="subtitle">
+    Conteúdo organizado em tópicos para consulta prática no Registro de Imóveis
+  </p>
+</header>
+
+<main class="container">
+
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Pesquisar palavra ou trecho no conteúdo..."
+    >
+    <button id="clearSearch">Limpar</button>
+  </div>
+
+  <section id="accordion" class="accordion">
+    <!-- Abas geradas via JS -->
+  </section>
+
+</main>
+
+<button id="backToTop" title="Voltar ao topo">↑</button>
+
+<script src="parcelamento_solo_urbano.js"></script>
+</body>
+</html>
