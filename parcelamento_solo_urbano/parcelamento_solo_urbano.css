@@ -1,0 +1,126 @@
+:root {
+  --vinho: #7a1f2b;
+  --verde: #2e6b4f;
+  --cinza: #f5f5f5;
+  --texto: #222;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: Aptos Display, Segoe UI, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--cinza);
+  color: var(--texto);
+}
+
+.header {
+  text-align: center;
+  padding: 20px;
+  background: white;
+  border-bottom: 4px solid var(--vinho);
+}
+
+.logo {
+  max-height: 60px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.search-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.search-box button {
+  padding: 10px 16px;
+  background: var(--verde);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.search-box button:hover {
+  opacity: 0.9;
+}
+
+.accordion-item {
+  background: white;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border-left: 5px solid var(--vinho);
+}
+
+.accordion-header {
+  padding: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-header:hover {
+  background: #fafafa;
+}
+
+.accordion-content {
+  display: none;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+  line-height: 1.6;
+}
+
+.accordion-item.open .accordion-content {
+  display: block;
+}
+
+.arrow {
+  transition: transform 0.2s ease;
+}
+
+.accordion-item.open .arrow {
+  transform: rotate(90deg);
+}
+
+.highlight {
+  background: yellow;
+  padding: 2px;
+}
+
+#backToTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 14px;
+  background: var(--vinho);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+}
+
+#backToTop:hover {
+  opacity: 0.9;
+}
