@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#7a1f2b">
-<rect x="3" y="5" width="18" height="14" fill="none" stroke="#7a1f2b" stroke-width="2"></rect>
-<line x1="7" y1="5" x2="7" y2="19" stroke="#7a1f2b" stroke-width="2"></line>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+  <rect x="3" y="4" width="18" height="4"></rect>
+  <rect x="3" y="10" width="18" height="4"></rect>
+  <rect x="3" y="16" width="18" height="4"></rect>
 </svg>
