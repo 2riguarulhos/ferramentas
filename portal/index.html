@@ -11,6 +11,7 @@
     --cinza-fundo: #f5f5f5;
     --cinza-menu: #efefef;
     --cinza-borda: #d0d0d0;
+    --cinza-divisor: #cfcfcf;
   }
 
   * {
@@ -58,7 +59,23 @@
 
   .menu-list {
     flex: 1;
-    padding: 10px 0;
+    padding: 12px 0;
+    overflow-y: auto;
+  }
+
+  .menu-section-title {
+    padding: 8px 20px 6px 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .menu-section-divider {
+    height: 1px;
+    background: var(--cinza-divisor);
+    margin: 6px 12px 10px 12px;
   }
 
   .menu-item {
@@ -68,7 +85,6 @@
     padding: 12px 20px;
     cursor: pointer;
     color: #000;
-    text-decoration: none;
     font-size: 15px;
   }
 
@@ -99,7 +115,7 @@
     border: none;
   }
 
-  /* MODAL "EM OBRAS" */
+  /* MODAL */
   .modal-bg {
     position: fixed;
     inset: 0;
@@ -124,9 +140,8 @@
     padding: 16px 18px;
     border-bottom: 4px solid var(--vinho);
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    align-items: center;
   }
 
   .modal-header h2 {
@@ -140,18 +155,16 @@
     background: transparent;
     font-size: 22px;
     cursor: pointer;
-    line-height: 1;
   }
 
   .modal-body {
     padding: 18px;
-    color: #222;
     font-size: 14px;
-    line-height: 1.45;
+    color: #222;
   }
 
   .modal-footer {
-    padding: 14px 18px 18px 18px;
+    padding: 14px 18px 18px;
     display: flex;
     justify-content: flex-end;
   }
@@ -165,7 +178,6 @@
     border-radius: 12px;
     cursor: pointer;
   }
-
 </style>
 </head>
 
@@ -181,9 +193,49 @@
     </div>
 
     <nav class="menu-list">
+
+      <!-- INFORMAÇÕES PREFEITURA -->
+      <div class="menu-section-title">Informações Prefeitura</div>
+      <div class="menu-section-divider"></div>
+
       <div class="menu-item active" onclick="abrir('planta-quadra', this)">
         <img src="icons/planta-quadra.svg">
         Planta Quadra
+      </div>
+
+      <div class="menu-item" onclick="abrir('valor-venal', this)">
+        <img src="icons/valor-venal.svg">
+        Valor Venal
+      </div>
+
+      <div class="menu-item" onclick="abrir('itbi', this)">
+        <img src="icons/itbi.svg">
+        Consulta de pagamento - ITBI
+      </div>
+
+      <div class="menu-item" onclick="abrir('numeracao-oficial', this)">
+        <img src="icons/numeracao-oficial.svg">
+        Certidão de Numeração Oficial
+      </div>
+
+      <!-- CONSULTAS -->
+      <div class="menu-section-divider"></div>
+      <div class="menu-section-title">Consultas</div>
+      <div class="menu-section-divider"></div>
+
+      <div class="menu-item" onclick="abrir('acervo', this)">
+        <img src="icons/acervo.svg">
+        Acervo
+      </div>
+
+      <div class="menu-item" onclick="abrir('parcelamento_solo_urbano', this)">
+        <img src="icons/parcelamento-solo.svg">
+        Parcelamento de Solo Urbano
+      </div>
+
+      <div class="menu-item" onclick="abrir('manual_pratico', this)">
+        <img src="icons/manual-pratico.svg">
+        Manual Prático
       </div>
 
       <div class="menu-item" onclick="abrir('consulta', this)">
@@ -191,46 +243,10 @@
         Consulta
       </div>
 
-      <div class="menu-item" onclick="abrir('checklist', this)">
-        <img src="icons/checklist.svg">
-        Checklist
-      </div>
-
-      <div class="menu-item" onclick="abrir('acervo', this)">
-        <img src="icons/acervo.svg">
-        Acervo
-      </div>
-
-      <!-- ✅ NOVO ITEM: MANaUAL PRÁTICO -->
-      <div class="menu-item" onclick="abrir('manual_pratico', this)">
-        <img src="icons/manual-pratico.svg">
-        Manual Prático
-      </div>
-
-      <!-- ✅ ALTERAÇÃO MÍNIMA: AGORA ABRE A PÁGINA VALOR-VENAL -->
-      <div class="menu-item" onclick="abrir('valor-venal', this)">
-        <img src="icons/valor-venal.svg">
-        Valor Venal
-      </div>
-      
-      <div class="menu-item" onclick="abrir('itbi', this)">
-  <img src="icons/itbi.svg">
-  Consulta de pagamento - ITBI
-      </div>
-      <!-- ✅ NOVO ITEM: NUMERAÇÃO OFICIAL -->
-<div class="menu-item" onclick="abrir('numeracao-oficial', this)">
-  <img src="icons/numeracao-oficial.svg">
-  Certidão de Numeração Oficial
-</div>
-
-      <div class="menu-item" onclick="abrir('parcelamento_solo_urbano', this)">
-  <img src="icons/parcelamento-solo.svg">
-  Parcelamento de Solo Urbano
-</div>
     </nav>
   </aside>
 
-  <!-- ÁREA CENTRAL -->
+  <!-- CONTEÚDO -->
   <main class="content">
     <iframe id="frame" src="../planta-quadra/index.html"></iframe>
   </main>
@@ -239,13 +255,13 @@
 
 <!-- MODAL -->
 <div class="modal-bg" id="modalBg" onclick="fecharModal(event)">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitulo" onclick="event.stopPropagation()">
+  <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
       <h2 id="modalTitulo">Em obras</h2>
       <button class="modal-close" onclick="fecharModal()">×</button>
     </div>
     <div class="modal-body" id="modalTexto">
-      Esta ferramenta ainda está em desenvolvimento e será disponibilizada em breve.
+      Esta ferramenta ainda está em desenvolvimento.
     </div>
     <div class="modal-footer">
       <button class="btn-ok" onclick="fecharModal()">Entendi</button>
@@ -262,26 +278,13 @@
     document.getElementById('frame').src = `../${pasta}/index.html`;
   }
 
-  function emObras(nomeFerramenta) {
-    const bg = document.getElementById("modalBg");
-    const titulo = document.getElementById("modalTitulo");
-    const texto = document.getElementById("modalTexto");
-
-    titulo.innerText = "Em obras";
-    texto.innerText = `A ferramenta "${nomeFerramenta}" ainda está em desenvolvimento e será disponibilizada em breve.`;
-
-    bg.style.display = "flex";
-  }
-
   function fecharModal(event) {
-    // se clicar no fundo, fecha
     const bg = document.getElementById("modalBg");
     if (!event || event.target === bg) {
       bg.style.display = "none";
     }
   }
 
-  // ESC fecha modal
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       document.getElementById("modalBg").style.display = "none";
