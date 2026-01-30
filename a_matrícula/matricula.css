@@ -1,44 +1,83 @@
+:root {
+  --vinho: #7a1f2b;
+  --amarelo: #fff59d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: "Aptos Display", "Segoe UI", system-ui, sans-serif;
   background: #f5f5f5;
 }
 
-.header {
-  background: #7a1f2b;
+.topo {
+  background: var(--vinho);
   color: #fff;
-  padding: 16px;
+  padding: 24px;
   text-align: center;
 }
 
-.search-box {
-  display: flex;
-  gap: 8px;
-  padding: 12px;
+.topo h1 {
+  margin: 0;
+  font-size: 28px;
+  letter-spacing: 1px;
+}
+
+.autor {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.search-container {
   background: #fff;
+  padding: 16px;
   border-bottom: 1px solid #ddd;
 }
 
-.search-box input {
-  flex: 1;
-  padding: 8px;
-  font-size: 14px;
+.search-container input {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 16px;
+  border-radius: 999px;
+  border: 2px solid var(--vinho);
+  outline: none;
 }
 
-.search-box button {
-  padding: 8px 12px;
-  background: #2e6b4f;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-#viewer {
-  padding: 16px;
+.viewer-container {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
 }
 
 canvas {
-  display: block;
-  margin: 0 auto 24px auto;
-  box-shadow: 0 2px 10px rgba(0,0,0,.15);
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+}
+
+.highlight {
+  background: var(--amarelo);
+}
+
+#btnTop {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: var(--vinho);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: none;
+}
+
+#btnTop:hover {
+  opacity: 0.85;
 }
