@@ -1,76 +1,93 @@
-#ferramenta-matricula {
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-  min-height: 100vh;
+:root {
+  --vinho: #7a1f2b;
 }
 
-/* Cabeçalho LIMPO (sem vinho herdado) */
-#ferramenta-matricula .topo {
-  background: #ffffff;
-  text-align: center;
-  padding: 20px;
-  border-bottom: 1px solid #ddd;
+* {
+  box-sizing: border-box;
 }
 
-#ferramenta-matricula .topo h1 {
+body {
   margin: 0;
-  font-size: 26px;
-  letter-spacing: 4px;
+  font-family: "Aptos Display", "Segoe UI", system-ui, sans-serif;
+  background: #f4f4f4;
 }
 
-#ferramenta-matricula .autor {
-  display: block;
-  margin-top: 6px;
+/* TOPO */
+.topo {
+  background: #fff;
+  border-bottom: 4px solid var(--vinho);
+  padding: 16px;
+  text-align: center;
+}
+
+.topo h1 {
+  margin: 0;
+  color: var(--vinho);
+  font-size: 22px;
+}
+
+.autor {
   font-size: 14px;
   color: #555;
 }
 
-/* Busca arredondada */
-#ferramenta-matricula .busca-wrapper {
-  padding: 20px;
-  background: #ffffff;
-  border-bottom: 1px solid #ddd;
+/* PESQUISA */
+.barra-pesquisa {
+  padding: 16px;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-#ferramenta-matricula #searchInput {
+.barra-pesquisa input {
   width: 100%;
-  max-width: 900px;
-  margin: auto;
+  max-width: 520px;
   display: block;
-  padding: 14px 20px;
+  margin: 0 auto;
+  padding: 12px 18px;
   border-radius: 999px;
   border: 1px solid #ccc;
-  font-size: 16px;
-  outline: none;
+  font-size: 14px;
 }
 
-/* Container do PDF */
-#ferramenta-matricula #pdf-container {
-  padding: 40px 0;
+/* PDF */
+#pdf-container {
+  padding: 24px;
   display: flex;
   flex-direction: column;
+  gap: 24px;
   align-items: center;
-  gap: 40px;
 }
 
-/* Canvas das páginas */
-#ferramenta-matricula canvas {
-  background: #ffffff;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-}
-
-/* Highlight da busca */
-#ferramenta-matricula .highlight {
-  background: yellow;
-}
-
-/* Botão subir */
+/* BOTÃO TOPO */
 #btnTop {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background: #7a1f2b;
-  color: #fff;
+  right: 20px;
+  bottom: 20px;
+  display: none;
   border: none;
+  background: var(--vinho);
+  color: #fff;
+  font-size: 18px;
+  padding: 10px 14px;
   border-radius: 50%;
-  wi
+  cursor: pointer;
+}
+
+/* TEXT LAYER (BUSCA) */
+.textLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.textLayer span {
+  position: absolute;
+  color: transparent;
+  white-space: pre;
+}
+
+.textLayer span.highlight {
+  background: yellow;
+}
