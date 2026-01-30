@@ -1,37 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>A Matrícula</title>
-
-  <link rel="stylesheet" href="matricula.css" />
+  <meta charset="UTF-8">
+  <title>A Matrícula – Gilberto Valente da Silva</title>
 
   <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <link rel="stylesheet" href="matricula.css">
 </head>
-
 <body>
-  <div id="ferramenta-matricula">
 
-    <header class="topo">
-      <h1>A MATRÍCULA</h1>
-      <span class="autor">Gilberto Valente da Silva</span>
-    </header>
+<header class="topo">
+  <h1>A MATRÍCULA</h1>
+  <span class="autor">Gilberto Valente da Silva</span>
+</header>
 
-    <div class="busca-wrapper">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Pesquisar no livro…"
-      />
-    </div>
+<div class="barra-pesquisa">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Pesquisar no livro…"
+  >
+</div>
 
-    <div id="pdf-container"></div>
+<main id="pdf-container"></main>
 
-    <button id="btnTop">↑</button>
+<button id="btnTop">↑</button>
 
-  </div>
-
-  <script src="matricula.js"></script>
+<script src="matricula.js"></script>
 </body>
 </html>
