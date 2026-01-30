@@ -12,56 +12,70 @@ let textLayers = [];
 
 pdfjsLib.getDocument(url).promise.then(pdf => {
   pdfDoc = pdf;
+
   for (let i = 1; i <= pdf.numPages; i++) {
     renderPage(i);
   }
 });
 
-function renderPage(pageNumber) {
-  pdfDoc.getPage(pageNumber).then(page => {
-    const scale = 1.5;
+function renderPage(num) {
+  pdfDoc.getPage(num).then(page => {
+    const scale = 1.4;
     const viewport = page.getViewport({ scale });
 
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+
     const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
 
     canvas.width = viewport.width;
     canvas.height = viewport.height;
 
-    container.appendChild(canvas);
+    wrapper.appendChild(canvas);
+    container.appendChild(wrapper);
 
-    page.render({ canvasContext: context, viewport });
+    page.render({
+      canvasContext: ctx,
+      viewport
+    });
 
     page.getTextContent().then(textContent => {
-      const textDiv = document.createElement('div');
-      textDiv.style.display = 'none';
+      const textLayer = document.createElement('div');
+      textLayer.className = 'textLayer';
+      textLayer.style.width = canvas.width + 'px';
+      textLayer.style.height = canvas.height + 'px';
 
-      textContent.items.forEach(item => {
-        const span = document.createElement('span');
-        span.textContent = item.str;
-        textDiv.appendChild(span);
+      wrapper.appendChild(textLayer);
+
+      pdfjsLib.renderTextLayer({
+        textContent,
+        container: textLayer,
+        viewport,
+        textDivs: []
       });
 
-      textLayers.push(textDiv);
+      textLayers.push(textLayer);
     });
   });
 }
 
-/* Busca com highlight */
+/* BUSCA COM HIGHLIGHT */
 searchInput.addEventListener('input', () => {
-  const term = searchInput.value.toLowerCase();
+  const termo = searchInput.value.toLowerCase();
 
   textLayers.forEach(layer => {
     layer.querySelectorAll('span').forEach(span => {
       span.classList.remove('highlight');
-      if (term && span.textContent.toLowerCase().includes(term)) {
+
+      if (termo && span.textContent.toLowerCase().includes(termo)) {
         span.classList.add('highlight');
       }
     });
   });
 });
 
-/* Botão subir */
+/* BOTÃO SUBIR */
 window.addEventListener('scroll', () => {
   btnTop.style.display = window.scrollY > 300 ? 'block' : 'none';
 });
