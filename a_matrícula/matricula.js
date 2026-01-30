@@ -1,40 +1,70 @@
-const url = 'a_matricula.pdf';
-let pdfDoc = null;
-let pageText = [];
+const PDF_URL = 'a_matricula.pdf';
 
-pdfjsLib.getDocument(url).promise.then(pdf => {
-  pdfDoc = pdf;
-  renderAllPages();
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+const canvas = document.getElementById('pdfCanvas');
+const ctx = canvas.getContext('2d');
+const searchInput = document.getElementById('searchInput');
+const btnTop = document.getElementById('btnTop');
+
+let pdfDoc = null;
+let currentPage = 1;
+let scale = 1.4;
+let textContentGlobal = '';
+
+async function loadPDF() {
+  pdfDoc = await pdfjsLib.getDocument(PDF_URL).promise;
+  renderPage(currentPage);
+}
+
+async function renderPage(num) {
+  const page = await pdfDoc.getPage(num);
+  const viewport = page.getViewport({ scale });
+
+  canvas.width = viewport.width;
+  canvas.height = viewport.height;
+
+  await page.render({
+    canvasContext: ctx,
+    viewport
+  }).promise;
+
+  const textContent = await page.getTextContent();
+  textContentGlobal = textContent.items.map(i => i.str).join(' ');
+}
+
+searchInput.addEventListener('input', () => {
+  const termo = searchInput.value.trim();
+  if (!termo) {
+    renderPage(currentPage);
+    return;
+  }
+  highlightText(termo);
 });
 
-async function renderAllPages() {
-  for (let i = 1; i <= pdfDoc.numPages; i++) {
-    const page = await pdfDoc.getPage(i);
-    const viewport = page.getViewport({ scale: 1.4 });
+function highlightText(termo) {
+  renderPage(currentPage).then(() => {
+    ctx.fillStyle = 'rgba(255, 245, 157, 0.6)';
+    ctx.font = '16px serif';
 
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    const regex = new RegExp(termo, 'gi');
+    let match;
+    let y = 40;
 
-    canvas.width = viewport.width;
-    canvas.height = viewport.height;
-
-    document.getElementById('viewer').appendChild(canvas);
-
-    await page.render({ canvasContext: ctx, viewport }).promise;
-
-    const text = await page.getTextContent();
-    pageText[i] = text.items.map(item => item.str).join(' ');
-  }
-}
-
-function buscar() {
-  const termo = document.getElementById('searchInput').value.toLowerCase();
-  if (!termo) return;
-
-  for (let i = 1; i < pageText.length; i++) {
-    if (pageText[i] && pageText[i].toLowerCase().includes(termo)) {
-      alert(`Encontrado na página ${i}`);
-      break;
+    while ((match = regex.exec(textContentGlobal)) !== null) {
+      ctx.fillRect(20, y, canvas.width - 40, 22);
+      y += 26;
     }
-  }
+  });
 }
+
+window.addEventListener('scroll', () => {
+  btnTop.style.display = window.scrollY > 300 ? 'block' : 'none';
+});
+
+btnTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+loadPDF();
