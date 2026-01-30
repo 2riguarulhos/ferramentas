@@ -1,64 +1,67 @@
-const PDF_URL = 'a_matricula.pdf';
+const url = 'a_matricula.pdf';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-const canvas = document.getElementById('pdfCanvas');
-const ctx = canvas.getContext('2d');
+const container = document.getElementById('pdf-container');
 const searchInput = document.getElementById('searchInput');
 const btnTop = document.getElementById('btnTop');
 
 let pdfDoc = null;
-let currentPage = 1;
-let scale = 1.4;
-let textContentGlobal = '';
+let textLayers = [];
 
-async function loadPDF() {
-  pdfDoc = await pdfjsLib.getDocument(PDF_URL).promise;
-  renderPage(currentPage);
-}
-
-async function renderPage(num) {
-  const page = await pdfDoc.getPage(num);
-  const viewport = page.getViewport({ scale });
-
-  canvas.width = viewport.width;
-  canvas.height = viewport.height;
-
-  await page.render({
-    canvasContext: ctx,
-    viewport
-  }).promise;
-
-  const textContent = await page.getTextContent();
-  textContentGlobal = textContent.items.map(i => i.str).join(' ');
-}
-
-searchInput.addEventListener('input', () => {
-  const termo = searchInput.value.trim();
-  if (!termo) {
-    renderPage(currentPage);
-    return;
+pdfjsLib.getDocument(url).promise.then(pdf => {
+  pdfDoc = pdf;
+  for (let i = 1; i <= pdf.numPages; i++) {
+    renderPage(i);
   }
-  highlightText(termo);
 });
 
-function highlightText(termo) {
-  renderPage(currentPage).then(() => {
-    ctx.fillStyle = 'rgba(255, 245, 157, 0.6)';
-    ctx.font = '16px serif';
+function renderPage(pageNumber) {
+  pdfDoc.getPage(pageNumber).then(page => {
+    const scale = 1.5;
+    const viewport = page.getViewport({ scale });
 
-    const regex = new RegExp(termo, 'gi');
-    let match;
-    let y = 40;
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
 
-    while ((match = regex.exec(textContentGlobal)) !== null) {
-      ctx.fillRect(20, y, canvas.width - 40, 22);
-      y += 26;
-    }
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    container.appendChild(canvas);
+
+    page.render({ canvasContext: context, viewport });
+
+    page.getTextContent().then(textContent => {
+      const textDiv = document.createElement('div');
+      textDiv.style.display = 'none';
+
+      textContent.items.forEach(item => {
+        const span = document.createElement('span');
+        span.textContent = item.str;
+        textDiv.appendChild(span);
+      });
+
+      textLayers.push(textDiv);
+    });
   });
 }
 
+/* Busca com highlight */
+searchInput.addEventListener('input', () => {
+  const term = searchInput.value.toLowerCase();
+
+  textLayers.forEach(layer => {
+    layer.querySelectorAll('span').forEach(span => {
+      span.classList.remove('highlight');
+      if (term && span.textContent.toLowerCase().includes(term)) {
+        span.classList.add('highlight');
+      }
+    });
+  });
+});
+
+/* Botão subir */
 window.addEventListener('scroll', () => {
   btnTop.style.display = window.scrollY > 300 ? 'block' : 'none';
 });
@@ -66,5 +69,3 @@ window.addEventListener('scroll', () => {
 btnTop.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
-
-loadPDF();
