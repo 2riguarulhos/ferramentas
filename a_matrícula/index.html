@@ -2,60 +2,26 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>A Matrícula – Registro de Imóveis</title>
+  <title>A Matrícula</title>
   <link rel="stylesheet" href="matricula.css">
 </head>
 
 <body>
 
-<div id="menu-portal">
-  <!-- menu do portal -->
-</div>
-
 <header class="header">
   <h1>A MATRÍCULA</h1>
 </header>
 
-<main class="container">
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Pesquisar no livro...">
+  <button onclick="buscar()">Pesquisar</button>
+</div>
 
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Pesquisar palavra ou expressão no texto...">
-    <button id="clearSearch">Limpar</button>
-  </div>
+<div id="viewer"></div>
 
-  <div id="article" class="article-box">
-
-A	M A T R Í C U L A
-
-Quando o legislador brasileiro resolveu modificar o sistema de registro imobiliário até então em vigor, optou pelo regime já existente em outros países, entre os quais a Argentina e a Espanha, tendo introduzido a MATRÍCULA, como suporte para todos os atos registrários (em sentido amplo), que devessem ser praticados em relação a um imóvel.
-
-Os vários doutrinadores que escrevem no País a respeito da matrícula procuraram, cada um segundo seu ponto de vista, conceituá-la, de forma a transmitir aos estudiosos do registro a exata noção do que ela representa.
-
-Assim, encontramos em EDSON JOSUÉ CAMPOS DE OLIVEIRA a seguinte noção:
-
-"A matrícula é um ato cadastral, é a forma pela qual se caracteriza e individualiza um imóvel e se lhe confere um número de ordem pelo qual será prontamente identificado”.
-
-A matrícula vem a ser também, um lançamento de transporte do imóvel, do sistema antigo de registro para o novo. Por isso é ato da economia interna da serventia, praticado de ofício, obrigatoriamente, e não depende de qualquer requerimento.(REGISTRO IMOBILIÁRIO, Ed. Rev, dos Tribunais, São Paulo, 1976, pp. 34/35).
-
-WALTER CENEVIVA doutrina que:
-
-"A matrícula é o núcleo do novo registro imobiliário. Seu controle rigoroso e a exatidão das indicações que nela se contiverem acabarão dando ao assentamento da propriedade imobiliária brasileira uma feição cadastral. Cada imóvel (Parágrafo único, I) indica a individualidade rigorosa da unidade predial. Na sistemática da lei, cada é interpretado em sentido estrito indicando prédio matriculado, estremando-o de dúvida dos vizinhos. Tratando-se de imóveis autônomos, mesmo negociados em um só título, cada um terá matrícula individual. Traço assinalador da matrícula é o de referir-se exclusivamente ao imóvel, exigindo perfeita caracterização deste, distinguindo-o dos demais. Permite que prédios, lotes ou áreas contíguas, se assim o requerer o titular, sejam unificados sob matrícula única, formando um só todo, distinto das unidades que o compuseram, individuado na área maior, provocando o cancelamento das matrículas de cada uma das partes originais. Ou, ao contrário, pode ensejar desmembramento, limitado, no caso de áreas rurais, pelas restrições modulares da legislação agrária. O aspecto individuador da matrícula se reforça com o adjetivo própria”. Cada e própria são palavras nucleares para o intérprete compatíveis com a anotação sistemática dos arts. 195, 227 e 236"( LEI DOS REGISTROS PÚBLICOS COMENTADA , Saraiva, São Paulo, 1986, 5a. ed.,p. 385).
-
-AFRANIO DE CARVALHO refere:
-
-"...termo "matrícula", insígnia honorífica da primeira inscrição do imóvel..."(REGISTRO DE IMÓVEIS, Forense, Rio, 1976. 1a. ed., p. 109).
-
-[ … TEXTO SEGUE INTEGRALMENTE … ]
-
-<!--
-O restante do texto foi mantido exatamente como no Word,
-sem qualquer alteração editorial.
--->
-
-  </div>
-
-</main>
-
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="matricula.js"></script>
+
 </body>
 </html>
