@@ -282,8 +282,7 @@
       .forEach(i => i.classList.remove('active'));
 
     el.classList.add('active');
-    document.getElementById('frame').src =
-  window.location.pathname.replace(/\/[^\/]*$/, '/') + pasta + '/index.html';
+    document.getElementById('frame').src = `../${pasta}/index.html`;
 
   }
 
